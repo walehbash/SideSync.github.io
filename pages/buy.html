@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buy Properties - Skyline Realty</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --accent: #00bfae;
+      --accent2: #1de9b6;
+      --bg: #0a0a0a;
+      --bg-card: #1a1a1a;
+      --text: #ffffff;
+      --text-muted: #a0a0a0;
+      --border: #333333;
+      --gradient: linear-gradient(135deg, #00bfae 0%, #1de9b6 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3vw;
+      background: rgba(26,26,26,0.95);
+      backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .navbar nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .navbar nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .navbar nav a:hover {
+      color: var(--accent);
+    }
+
+    .navbar nav a.active {
+      color: var(--accent);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .search-container {
+      background: var(--bg-card);
+      padding: 2rem;
+      border-radius: 15px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .search-form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .search-form input,
+    .search-form select {
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .search-form input:focus,
+    .search-form select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .search-btn {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .search-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,191,174,0.3);
+    }
+
+    .features {
+      padding: 4rem 3vw;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-card i {
+      font-size: 3rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card p {
+      color: var(--text-muted);
+    }
+
+    .properties-section {
+      padding: 4rem 3vw;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .properties-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .property-card {
+      background: var(--bg-card);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .property-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .property-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .property-info {
+      padding: 1.5rem;
+    }
+
+    .property-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .property-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .property-location {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .property-features {
+      display: flex;
+      gap: 1rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .buy-now-btn {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+      width: 100%;
+    }
+
+    .buy-now-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,191,174,0.3);
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .search-form {
+        grid-template-columns: 1fr;
+      }
+      
+      .properties-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <span class="logo">SKYLINE REALTY</span>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="properties.html">Properties</a>
+      <a href="buy.html" class="active">Buy</a>
+      <a href="rent.html">Rent</a>
+      <a href="sell.html">Sell</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+
+  <div class="hero">
+    <h1>Buy Your Dream Home</h1>
+    <p>Find the perfect property to call your own with our expert guidance</p>
+    
+    <div class="search-container">
+      <form class="search-form" onsubmit="handleSearch(event)">
+        <input type="text" placeholder="Location, city, or ZIP" required>
+        <select required>
+          <option value="">Property Type</option>
+          <option value="house">House</option>
+          <option value="condo">Condo</option>
+          <option value="townhouse">Townhouse</option>
+          <option value="land">Land</option>
+        </select>
+        <select required>
+          <option value="">Price Range</option>
+          <option value="0-200000">Under $200,000</option>
+          <option value="200000-400000">$200,000 - $400,000</option>
+          <option value="400000-600000">$400,000 - $600,000</option>
+          <option value="600000-1000000">$600,000 - $1,000,000</option>
+          <option value="1000000+">$1,000,000+</option>
+        </select>
+        <button type="submit" class="search-btn">Search Properties</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="features">
+    <div class="feature-card">
+      <i class="fas fa-home"></i>
+      <h3>Expert Guidance</h3>
+      <p>Our experienced agents will guide you through every step of the buying process</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-chart-line"></i>
+      <h3>Market Analysis</h3>
+      <p>Get detailed market insights and property valuations to make informed decisions</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-handshake"></i>
+      <h3>Negotiation Support</h3>
+      <p>We'll help you negotiate the best possible price and terms for your new home</p>
+    </div>
+  </div>
+
+  <div class="properties-section">
+    <div class="section-header">
+      <h2>Featured Properties for Sale</h2>
+      <p>Handpicked properties that offer exceptional value and lifestyle</p>
+    </div>
+    
+    <div class="properties-grid" id="propertiesGrid">
+      <!-- Properties will be loaded here -->
+    </div>
+  </div>
+
+  <script>
+    // Featured properties for sale
+    const buyProperties = [
+      {
+        id: 1,
+        title: "Modern Family Home",
+        location: "Austin, TX",
+        price: 485000,
+        image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: 2800,
+        type: "house"
+      },
+      {
+        id: 2,
+        title: "Downtown Condo",
+        location: "Miami, FL",
+        price: 320000,
+        image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+        beds: 2,
+        baths: 2,
+        sqft: 1200,
+        type: "condo"
+      },
+      {
+        id: 3,
+        title: "Suburban Ranch",
+        location: "Phoenix, AZ",
+        price: 395000,
+        image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 2,
+        sqft: 2100,
+        type: "house"
+      },
+      {
+        id: 4,
+        title: "Waterfront Townhouse",
+        location: "Seattle, WA",
+        price: 675000,
+        image: "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 2.5,
+        sqft: 1800,
+        type: "townhouse"
+      },
+      {
+        id: 5,
+        title: "Luxury Penthouse",
+        location: "New York, NY",
+        price: 1250000,
+        image: "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 3,
+        sqft: 2200,
+        type: "condo"
+      },
+      {
+        id: 6,
+        title: "Family Estate",
+        location: "Dallas, TX",
+        price: 890000,
+        image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=80",
+        beds: 5,
+        baths: 4,
+        sqft: 4200,
+        type: "house"
+      }
+    ];
+
+    function formatPrice(price) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(price);
+    }
+
+    function renderProperties() {
+      const grid = document.getElementById('propertiesGrid');
+      grid.innerHTML = buyProperties.map(property => `
+        <div class="property-card" onclick="showPropertyDetails(${property.id})">
+          <img src="${property.image}" alt="${property.title}" class="property-image">
+          <div class="property-info">
+            <div class="property-price">${formatPrice(property.price)}</div>
+            <h3 class="property-title">${property.title}</h3>
+            <p class="property-location">${property.location}</p>
+            <div class="property-features">
+              <span class="feature">🛏️ ${property.beds} beds</span>
+              <span class="feature">🛁 ${property.baths} baths</span>
+              <span class="feature">🏠 ${property.sqft.toLocaleString()} sqft</span>
+              <span class="feature">📍 ${property.type}</span>
+            </div>
+            <button class="buy-now-btn" onclick="event.stopPropagation(); buyProperty(${property.id})">
+              Schedule Viewing
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function showPropertyDetails(id) {
+      const property = buyProperties.find(p => p.id === id);
+      if (property) {
+        alert(`Property Details:\n${property.title}\n${property.location}\n${formatPrice(property.price)}\n${property.beds} beds, ${property.baths} baths\n${property.sqft.toLocaleString()} sqft`);
+      }
+    }
+
+    function buyProperty(id) {
+      const property = buyProperties.find(p => p.id === id);
+      if (property) {
+        alert(`Thank you for your interest in ${property.title}!\n\nOur agent will contact you within 24 hours to schedule a viewing.\n\nProperty: ${property.title}\nPrice: ${formatPrice(property.price)}\nLocation: ${property.location}`);
+      }
+    }
+
+    function handleSearch(event) {
+      event.preventDefault();
+      alert('Search functionality coming soon! This would show filtered results based on your criteria.');
+    }
+
+    // Initial render
+    renderProperties();
+  </script>
+</body>
+</html> 

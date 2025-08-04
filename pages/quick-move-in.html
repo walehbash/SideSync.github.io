@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quick Move In - Skyline Realty</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --accent: #00bfae;
+      --accent2: #1de9b6;
+      --bg: #0a0a0a;
+      --bg-card: #1a1a1a;
+      --text: #ffffff;
+      --text-muted: #a0a0a0;
+      --border: #333333;
+      --gradient: linear-gradient(135deg, #00bfae 0%, #1de9b6 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3vw;
+      background: rgba(26,26,26,0.95);
+      backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .navbar nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .navbar nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .navbar nav a:hover {
+      color: var(--accent);
+    }
+
+    .navbar nav a.active {
+      color: var(--accent);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .quick-move-badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: #ff6b35;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .properties-section {
+      padding: 4rem 3vw;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .properties-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .property-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .property-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    .property-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      transition: all 0.3s ease;
+    }
+
+    .property-card:hover .property-image {
+      transform: scale(1.05);
+    }
+
+    .property-info {
+      padding: 1.5rem;
+    }
+
+    .property-price {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .property-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .property-location {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .property-features {
+      display: flex;
+      gap: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .move-in-info {
+      background: rgba(255, 107, 53, 0.1);
+      border: 1px solid rgba(255, 107, 53, 0.3);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .move-in-info h4 {
+      color: #ff6b35;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .move-in-info p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .btn-primary {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      flex: 1;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,191,174,0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      flex: 1;
+    }
+
+    .btn-secondary:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .filters {
+      background: var(--bg-card);
+      padding: 2rem;
+      border-radius: 15px;
+      margin-bottom: 3rem;
+      border: 1px solid var(--border);
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .filter-group label {
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .filter-group select,
+    .filter-group input {
+      padding: 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .properties-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <span class="logo">SKYLINE REALTY</span>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="properties.html">Properties</a>
+      <a href="buy.html">Buy</a>
+      <a href="rent.html">Rent</a>
+      <a href="sell.html">Sell</a>
+      <a href="quick-move-in.html" class="active">Quick Move In</a>
+      <a href="verified.html">Verified</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+
+  <div class="hero">
+    <h1>Quick Move In Properties</h1>
+    <p>Find your new home today! These properties are ready for immediate occupancy.</p>
+  </div>
+
+  <div class="properties-section">
+    <div class="section-header">
+      <h2>Available Now</h2>
+      <p>Properties ready for immediate move-in with no waiting period</p>
+    </div>
+
+    <div class="filters">
+      <div class="filter-grid">
+        <div class="filter-group">
+          <label>Location</label>
+          <select id="locationFilter">
+            <option value="">All Locations</option>
+            <option value="Austin">Austin, TX</option>
+            <option value="Miami">Miami, FL</option>
+            <option value="Phoenix">Phoenix, AZ</option>
+            <option value="Seattle">Seattle, WA</option>
+            <option value="New York">New York, NY</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Property Type</label>
+          <select id="typeFilter">
+            <option value="">All Types</option>
+            <option value="house">House</option>
+            <option value="condo">Condo</option>
+            <option value="apartment">Apartment</option>
+            <option value="townhouse">Townhouse</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Price Range</label>
+          <select id="priceFilter">
+            <option value="">All Prices</option>
+            <option value="0-500000">Under $500K</option>
+            <option value="500000-1000000">$500K - $1M</option>
+            <option value="1000000+">Over $1M</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Bedrooms</label>
+          <select id="bedFilter">
+            <option value="">Any</option>
+            <option value="1">1+</option>
+            <option value="2">2+</option>
+            <option value="3">3+</option>
+            <option value="4">4+</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="properties-grid" id="propertiesGrid">
+      <!-- Properties will be loaded here -->
+    </div>
+  </div>
+
+  <script>
+    const quickMoveProperties = [
+      {
+        id: 1,
+        title: "Downtown Apartment",
+        location: "Austin, TX",
+        price: 285000,
+        image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+        beds: 1,
+        baths: 1,
+        sqft: 850,
+        type: "apartment",
+        moveInDate: "Available Now",
+        utilities: "Included",
+        furnished: "Partially"
+      },
+      {
+        id: 2,
+        title: "Modern Condo",
+        location: "Miami, FL",
+        price: 320000,
+        image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+        beds: 2,
+        baths: 2,
+        sqft: 1200,
+        type: "condo",
+        moveInDate: "Available Now",
+        utilities: "Not Included",
+        furnished: "Unfurnished"
+      },
+      {
+        id: 3,
+        title: "Suburban Home",
+        location: "Phoenix, AZ",
+        price: 395000,
+        image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 2,
+        sqft: 2100,
+        type: "house",
+        moveInDate: "Available Now",
+        utilities: "Not Included",
+        furnished: "Unfurnished"
+      },
+      {
+        id: 4,
+        title: "Waterfront Townhouse",
+        location: "Seattle, WA",
+        price: 675000,
+        image: "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 2.5,
+        sqft: 1800,
+        type: "townhouse",
+        moveInDate: "Available Now",
+        utilities: "Included",
+        furnished: "Fully Furnished"
+      },
+      {
+        id: 5,
+        title: "Urban Loft",
+        location: "Chicago, IL",
+        price: 445000,
+        image: "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=600&q=80",
+        beds: 2,
+        baths: 2,
+        sqft: 1600,
+        type: "loft",
+        moveInDate: "Available Now",
+        utilities: "Included",
+        furnished: "Partially"
+      },
+      {
+        id: 6,
+        title: "Mountain Cabin",
+        location: "Denver, CO",
+        price: 525000,
+        image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 2,
+        sqft: 1900,
+        type: "cabin",
+        moveInDate: "Available Now",
+        utilities: "Not Included",
+        furnished: "Unfurnished"
+      }
+    ];
+
+    function formatPrice(price) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(price);
+    }
+
+    function renderProperties(properties = quickMoveProperties) {
+      const grid = document.getElementById('propertiesGrid');
+      grid.innerHTML = properties.map(property => `
+        <div class="property-card" onclick="showPropertyDetails(${property.id})">
+          <div class="quick-move-badge">QUICK MOVE IN</div>
+          <img src="${property.image}" alt="${property.title}" class="property-image">
+          <div class="property-info">
+            <div class="property-price">${formatPrice(property.price)}</div>
+            <h3 class="property-title">${property.title}</h3>
+            <p class="property-location">${property.location}</p>
+            <div class="property-features">
+              <span class="feature">🛏️ ${property.beds} beds</span>
+              <span class="feature">🛁 ${property.baths} baths</span>
+              <span class="feature">🏠 ${property.sqft.toLocaleString()} sqft</span>
+              <span class="feature">📍 ${property.type}</span>
+            </div>
+            <div class="move-in-info">
+              <h4>Move-In Ready</h4>
+              <p>📅 ${property.moveInDate}</p>
+              <p>⚡ Utilities: ${property.utilities}</p>
+              <p>🪑 Furnished: ${property.furnished}</p>
+            </div>
+            <div class="action-buttons">
+              <button class="btn-primary" onclick="event.stopPropagation(); scheduleViewing(${property.id})">
+                Schedule Viewing
+              </button>
+              <button class="btn-secondary" onclick="event.stopPropagation(); applyNow(${property.id})">
+                Apply Now
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function showPropertyDetails(id) {
+      const property = quickMoveProperties.find(p => p.id === id);
+      if (property) {
+        alert(`Property Details:\n${property.title}\n${property.location}\n${formatPrice(property.price)}\n${property.beds} beds, ${property.baths} baths\n${property.sqft.toLocaleString()} sqft\n\nMove-in Date: ${property.moveInDate}\nUtilities: ${property.utilities}\nFurnished: ${property.furnished}`);
+      }
+    }
+
+    function scheduleViewing(id) {
+      alert('Viewing scheduled! Our agent will contact you within 24 hours to confirm the appointment.');
+    }
+
+    function applyNow(id) {
+      alert('Application started! You will be redirected to our application form.');
+    }
+
+    function filterProperties() {
+      const location = document.getElementById('locationFilter').value;
+      const type = document.getElementById('typeFilter').value;
+      const price = document.getElementById('priceFilter').value;
+      const beds = document.getElementById('bedFilter').value;
+
+      let filtered = quickMoveProperties.filter(property => {
+        const matchesLocation = !location || property.location.includes(location);
+        const matchesType = !type || property.type === type;
+        const matchesBeds = !beds || property.beds >= parseInt(beds);
+        
+        let matchesPrice = true;
+        if (price === '0-500000') {
+          matchesPrice = property.price <= 500000;
+        } else if (price === '500000-1000000') {
+          matchesPrice = property.price > 500000 && property.price <= 1000000;
+        } else if (price === '1000000+') {
+          matchesPrice = property.price > 1000000;
+        }
+
+        return matchesLocation && matchesType && matchesBeds && matchesPrice;
+      });
+
+      renderProperties(filtered);
+    }
+
+    // Add event listeners for filters
+    document.addEventListener('DOMContentLoaded', function() {
+      renderProperties();
+      
+      document.getElementById('locationFilter').addEventListener('change', filterProperties);
+      document.getElementById('typeFilter').addEventListener('change', filterProperties);
+      document.getElementById('priceFilter').addEventListener('change', filterProperties);
+      document.getElementById('bedFilter').addEventListener('change', filterProperties);
+    });
+  </script>
+</body>
+</html> 

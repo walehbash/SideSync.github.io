@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us - Skyline Realty</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --accent: #00bfae;
+      --accent2: #1de9b6;
+      --bg: #0a0a0a;
+      --bg-card: #1a1a1a;
+      --text: #ffffff;
+      --text-muted: #a0a0a0;
+      --border: #333333;
+      --gradient: linear-gradient(135deg, #00bfae 0%, #1de9b6 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3vw;
+      background: rgba(26,26,26,0.95);
+      backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .navbar nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .navbar nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .navbar nav a:hover {
+      color: var(--accent);
+    }
+
+    .navbar nav a.active {
+      color: var(--accent);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+      padding: 6rem 2rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .about-section {
+      padding: 4rem 3vw;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      margin-bottom: 4rem;
+    }
+
+    .about-content h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .about-content p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-image {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 20px;
+    }
+
+    .stats-section {
+      background: var(--bg-card);
+      padding: 4rem 3vw;
+      margin: 4rem 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .stat-number {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .team-section {
+      padding: 4rem 3vw;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .team-section h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 3rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .team-card {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .team-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .team-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      overflow: hidden;
+      border: 3px solid var(--accent);
+    }
+
+    .team-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .team-card:hover .team-avatar img {
+      transform: scale(1.1);
+    }
+
+    .team-name {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .team-role {
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .team-bio {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .values-section {
+      background: var(--bg-card);
+      padding: 4rem 3vw;
+      margin: 4rem 0;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .value-card {
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .value-icon {
+      font-size: 3rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .value-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .value-description {
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .about-content h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <span class="logo">SKYLINE REALTY</span>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="properties.html">Properties</a>
+      <a href="buy.html">Buy</a>
+      <a href="rent.html">Rent</a>
+      <a href="sell.html">Sell</a>
+      <a href="about.html" class="active">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+
+  <div class="hero">
+    <h1>About Skyline Realty</h1>
+    <p>Building dreams, one property at a time. We're your trusted partner in real estate for over 25 years.</p>
+  </div>
+
+  <div class="about-section">
+    <div class="about-grid">
+      <div class="about-content">
+        <h2>Our Story</h2>
+        <p>Founded in 1998, Skyline Realty has been at the forefront of the real estate industry, helping thousands of families find their perfect homes and investors build their portfolios.</p>
+        <p>What started as a small local agency has grown into one of the most trusted names in real estate, serving clients across the United States with integrity, professionalism, and unmatched expertise.</p>
+        <p>Our mission is simple: to make the home buying and selling process as smooth and enjoyable as possible, while ensuring our clients get the best value for their investment.</p>
+      </div>
+      <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=80" alt="Skyline Realty Office" class="about-image">
+    </div>
+  </div>
+
+  <div class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">25+</div>
+        <div class="stat-label">Years of Experience</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">5,000+</div>
+        <div class="stat-label">Properties Sold</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">2,500+</div>
+        <div class="stat-label">Happy Clients</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">50+</div>
+        <div class="stat-label">Expert Agents</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="team-section">
+    <h2>Our Leadership Team</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80" alt="Michael Johnson">
+        </div>
+        <div class="team-name">Michael Johnson</div>
+        <div class="team-role">CEO & Founder</div>
+        <div class="team-bio">With over 30 years in real estate, Michael leads our company with vision and dedication to client success.</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">
+          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80" alt="Sarah Williams">
+        </div>
+        <div class="team-name">Sarah Williams</div>
+        <div class="team-role">Chief Operations Officer</div>
+        <div class="team-bio">Sarah ensures every transaction runs smoothly with her exceptional organizational skills and attention to detail.</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">
+          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80" alt="David Chen">
+        </div>
+        <div class="team-name">David Chen</div>
+        <div class="team-role">Head of Technology</div>
+        <div class="team-bio">David drives our digital innovation, making property searches and transactions seamless through cutting-edge technology.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="values-section">
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">🤝</div>
+        <div class="value-title">Trust & Integrity</div>
+        <div class="value-description">We build lasting relationships based on honesty, transparency, and unwavering commitment to our clients' best interests.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🎯</div>
+        <div class="value-title">Excellence</div>
+        <div class="value-description">We strive for excellence in every transaction, ensuring the highest level of service and satisfaction for our clients.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">💡</div>
+        <div class="value-title">Innovation</div>
+        <div class="value-description">We embrace technology and innovative solutions to provide the best possible experience for our clients.</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html> 

@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Skyline Realty - Find Your Dream Home</title>
+  <meta name="description" content="Discover luxury properties with Skyline Realty. Find your perfect home with our expert real estate services.">
+  <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      /* Dark Theme Colors */
+      --accent: #00bfae;
+      --accent2: #1de9b6;
+      --bg: #0a0a0a;
+      --bg-card: #1a1a1a;
+      --bg-card-hover: #252525;
+      --text: #ffffff;
+      --text-muted: #a0a0a0;
+      --text-secondary: #808080;
+      --border: #333333;
+      --shadow: 0 8px 32px rgba(0,0,0,0.4);
+      --shadow-light: 0 4px 16px rgba(0,0,0,0.2);
+      --gradient: linear-gradient(135deg, #00bfae 0%, #1de9b6 100%);
+      --notification-red: #ff4757;
+      
+      /* Light Theme Colors */
+      --bg-light: #ffffff;
+      --bg-card-light: #f8f9fa;
+      --bg-card-hover-light: #e9ecef;
+      --text-light: #1a1a1a;
+      --text-muted-light: #6c757d;
+      --text-secondary-light: #495057;
+      --border-light: #dee2e6;
+      --shadow-light-theme: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: all 0.3s ease;
+      overflow-x: hidden;
+    }
+
+    body.light-mode {
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.85) 100%);
+      z-index: 0;
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode::before {
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+    }
+
+    #app {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 80px;
+      z-index: 1000;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    body.light-mode .theme-toggle {
+      background: var(--bg-card-light);
+      border-color: var(--border-light);
+      box-shadow: var(--shadow-light-theme);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.05) rotate(180deg);
+    }
+
+    .theme-toggle svg {
+      width: 20px;
+      height: 20px;
+      color: var(--text);
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode .theme-toggle svg {
+      color: var(--text-light);
+    }
+
+    /* Notification System */
+    .notification-icon {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    body.light-mode .notification-icon {
+      background: var(--bg-card-light);
+      border-color: var(--border-light);
+      box-shadow: var(--shadow-light-theme);
+    }
+
+    .notification-icon:hover {
+      transform: scale(1.05);
+    }
+
+    .notification-icon i {
+      font-size: 18px;
+      color: var(--text);
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode .notification-icon i {
+      color: var(--text-light);
+    }
+
+    .notification-dot {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 12px;
+      height: 12px;
+      background: var(--notification-red);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+      display: none;
+    }
+
+    .notification-dot.active {
+      display: block;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* AI Chat Widget */
+    .ai-chat-widget {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: var(--gradient);
+      border-radius: 50px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    .ai-chat-widget:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 40px rgba(0,191,174,0.4);
+    }
+
+    .ai-chat-widget i {
+      font-size: 24px;
+      color: white;
+    }
+
+    .ai-chat-modal {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 350px;
+      height: 500px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      z-index: 1001;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    body.light-mode .ai-chat-modal {
+      background: var(--bg-card-light);
+      border-color: var(--border-light);
+      box-shadow: var(--shadow-light-theme);
+    }
+
+    .ai-chat-header {
+      background: var(--gradient);
+      color: white;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ai-chat-header h3 {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .ai-chat-close {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    .ai-chat-messages {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .ai-message {
+      background: var(--bg);
+      border-radius: 15px;
+      padding: 0.8rem;
+      max-width: 80%;
+      align-self: flex-start;
+    }
+
+    body.light-mode .ai-message {
+      background: var(--bg-light);
+    }
+
+    .user-message {
+      background: var(--gradient);
+      color: white;
+      border-radius: 15px;
+      padding: 0.8rem;
+      max-width: 80%;
+      align-self: flex-end;
+    }
+
+    .ai-chat-input {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    body.light-mode .ai-chat-input {
+      border-color: var(--border-light);
+    }
+
+    .ai-chat-input input {
+      flex: 1;
+      padding: 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    body.light-mode .ai-chat-input input {
+      border-color: var(--border-light);
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    .ai-chat-input button {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .ai-chat-input button:hover {
+      transform: scale(1.1);
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3vw;
+      background: rgba(26,26,26,0.95);
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode .navbar {
+      background: rgba(248,249,250,0.95);
+      box-shadow: var(--shadow-light-theme);
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: all 0.3s ease;
+    }
+
+    .navbar .logo:hover {
+      transform: scale(1.05);
+    }
+
+    .navbar nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .navbar nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      position: relative;
+      padding: 0.5rem 0;
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode .navbar nav a {
+      color: var(--text-light);
+    }
+
+    .navbar nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gradient);
+      transition: width 0.3s ease;
+    }
+
+    .navbar nav a:hover::after,
+    .navbar nav a.active::after {
+      width: 100%;
+    }
+
+    .navbar nav a:hover,
+    .navbar nav a.active {
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .navbar .cta-btn {
+      background: var(--gradient);
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      padding: 0.7rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      margin-left: 1rem;
+    }
+
+    .navbar .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,191,174,0.3);
+    }
+
+    /* Enhanced Social Icons */
+    .social-icons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social-icon::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .social-icon:hover::before {
+      left: 100%;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-3px) scale(1.1);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    }
+
+    .social-icon.facebook { background: #1877f2; }
+    .social-icon.twitter { background: #1da1f2; }
+    .social-icon.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    .social-icon.linkedin { background: #0077b5; }
+    .social-icon.youtube { background: #ff0000; }
+
+    /* Enhanced Google Button */
+    .google-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      color: #333;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.8rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body.light-mode .google-btn {
+      border-color: var(--border-light);
+    }
+
+    .google-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .google-btn:hover::before {
+      left: 100%;
+    }
+
+    .google-btn:hover {
+      background: #f8f9fa;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    .google-btn img {
+      width: 20px;
+      height: 20px;
+      margin-right: 0.8rem;
+      transition: all 0.3s ease;
+    }
+
+    .google-btn:hover img {
+      transform: scale(1.1);
+    }
+
+    /* Enhanced Property Cards */
+    .property-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    body.light-mode .property-card {
+      background: var(--bg-card-light);
+      border-color: var(--border-light);
+    }
+
+    .property-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1;
+    }
+
+    .property-card:hover::before {
+      opacity: 0.1;
+    }
+
+    .property-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: var(--shadow);
+    }
+
+    body.light-mode .property-card:hover {
+      box-shadow: var(--shadow-light-theme);
+    }
+
+    .property-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      transition: all 0.3s ease;
+    }
+
+    .property-card:hover .property-image {
+      transform: scale(1.1);
+    }
+
+    .property-info {
+      padding: 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .property-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .property-card:hover .property-price {
+      transform: scale(1.05);
+    }
+
+    /* Loading Animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Success/Error Messages */
+    .message {
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      font-weight: 500;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .message.success {
+      background: rgba(0,191,174,0.1);
+      color: var(--accent);
+      border: 1px solid rgba(0,191,174,0.3);
+    }
+
+    .message.error {
+      background: rgba(255,59,48,0.1);
+      color: #ff3b30;
+      border: 1px solid rgba(255,59,48,0.3);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem 2vw;
+      }
+
+      .navbar nav {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .ai-chat-modal {
+        width: 90vw;
+        right: 5vw;
+        left: 5vw;
+      }
+
+      .theme-toggle,
+      .notification-icon {
+        top: 10px;
+      }
+
+      .theme-toggle {
+        right: 70px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+    <svg id="theme-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+    </svg>
+  </button>
+
+  <!-- Notification Icon -->
+  <button class="notification-icon" onclick="toggleNotifications()" title="Notifications">
+    <i class="fas fa-bell"></i>
+    <div class="notification-dot" id="notificationDot"></div>
+  </button>
+
+  <!-- AI Chat Widget -->
+  <button class="ai-chat-widget" onclick="toggleAIChat()" title="AI Customer Support">
+    <i class="fas fa-robot"></i>
+  </button>
+
+  <!-- AI Chat Modal -->
+  <div class="ai-chat-modal" id="aiChatModal">
+    <div class="ai-chat-header">
+      <h3><i class="fas fa-robot"></i> AI Assistant</h3>
+      <button class="ai-chat-close" onclick="toggleAIChat()">×</button>
+    </div>
+    <div class="ai-chat-messages" id="aiChatMessages">
+      <div class="ai-message">
+        👋 Hi! I'm your AI assistant. How can I help you find your dream home today?
+      </div>
+    </div>
+    <div class="ai-chat-input">
+      <input type="text" id="aiChatInput" placeholder="Ask me anything..." onkeypress="handleAIChatKeyPress(event)">
+      <button onclick="sendAIMessage()">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Global state
+    let currentUser = null;
+    let isDarkMode = true;
+    let currentAuthTab = 'login';
+    let notificationCount = 0;
+    let aiChatOpen = false;
+
+    // Enhanced property data
+    const properties = [
+      {
+        id: 1,
+        title: "Luxury Villa in Beverly Hills",
+        location: "Beverly Hills, CA",
+        price: "$2,850,000",
+        image: "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=600&q=80",
+        beds: 5,
+        baths: 4,
+        sqft: "4,200",
+        type: "Villa"
+      },
+      {
+        id: 2,
+        title: "Modern Penthouse",
+        location: "Manhattan, NY",
+        price: "$1,950,000",
+        image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 3,
+        sqft: "2,800",
+        type: "Penthouse"
+      },
+      {
+        id: 3,
+        title: "Oceanfront Condo",
+        location: "Miami Beach, FL",
+        price: "$1,250,000",
+        image: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=600&q=80",
+        beds: 2,
+        baths: 2,
+        sqft: "1,600",
+        type: "Condo"
+      },
+      {
+        id: 4,
+        title: "Mountain Retreat",
+        location: "Aspen, CO",
+        price: "$3,200,000",
+        image: "https://images.unsplash.com/photo-1460518451285-97b6aa326961?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: "3,500",
+        type: "Cabin"
+      },
+      {
+        id: 5,
+        title: "Downtown Loft",
+        location: "Chicago, IL",
+        price: "$850,000",
+        image: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=600&q=80",
+        beds: 2,
+        baths: 2,
+        sqft: "1,800",
+        type: "Loft"
+      },
+      {
+        id: 6,
+        title: "Garden Estate",
+        location: "Seattle, WA",
+        price: "$1,750,000",
+        image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: "3,200",
+        type: "Estate"
+      }
+    ];
+
+    // AI Chat Responses
+    const aiResponses = {
+      greeting: [
+        "Hello! I'm here to help you find your perfect home. What type of property are you looking for?",
+        "Hi there! I can help you with property searches, pricing information, and scheduling viewings. What would you like to know?",
+        "Welcome! I'm your AI assistant. I can help you explore properties, get market insights, and answer any real estate questions."
+      ],
+      property: [
+        "I can help you find properties in your preferred location. What's your budget range?",
+        "Great! I have access to thousands of listings. What features are most important to you?",
+        "I can show you properties that match your criteria. Would you like to schedule a viewing?"
+      ],
+      pricing: [
+        "I can provide current market prices and trends for your area of interest.",
+        "Let me check the latest pricing data for properties similar to what you're looking for.",
+        "I can help you understand market values and pricing strategies."
+      ],
+      default: [
+        "That's interesting! Let me help you with that. Could you provide more details?",
+        "I'd be happy to assist with that. What specific information are you looking for?",
+        "Great question! Let me find the most relevant information for you."
+      ]
+    };
+
+    // Theme management
+    function toggleTheme() {
+      isDarkMode = !isDarkMode;
+      document.body.classList.toggle('light-mode', !isDarkMode);
+      localStorage.setItem('skylineTheme', isDarkMode ? 'dark' : 'light');
+      
+      const icon = document.getElementById('theme-icon');
+      if (isDarkMode) {
+        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>';
+      } else {
+        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>';
+      }
+    }
+
+    // Notification system
+    function toggleNotifications() {
+      showMessage('Notifications feature coming soon! You\'ll receive updates about new properties and market changes.');
+      hideNotificationDot();
+    }
+
+    function showNotificationDot() {
+      const dot = document.getElementById('notificationDot');
+      dot.classList.add('active');
+      notificationCount++;
+    }
+
+    function hideNotificationDot() {
+      const dot = document.getElementById('notificationDot');
+      dot.classList.remove('active');
+      notificationCount = 0;
+    }
+
+    // AI Chat system
+    function toggleAIChat() {
+      const modal = document.getElementById('aiChatModal');
+      aiChatOpen = !aiChatOpen;
+      modal.style.display = aiChatOpen ? 'flex' : 'none';
+      
+      if (aiChatOpen) {
+        document.getElementById('aiChatInput').focus();
+      }
+    }
+
+    function handleAIChatKeyPress(event) {
+      if (event.key === 'Enter') {
+        sendAIMessage();
+      }
+    }
+
+    function sendAIMessage() {
+      const input = document.getElementById('aiChatInput');
+      const message = input.value.trim();
+      
+      if (!message) return;
+
+      // Add user message
+      addAIMessage(message, 'user');
+      input.value = '';
+
+      // Simulate AI thinking
+      setTimeout(() => {
+        const response = generateAIResponse(message);
+        addAIMessage(response, 'ai');
+      }, 1000);
+    }
+
+    function addAIMessage(message, sender) {
+      const messagesContainer = document.getElementById('aiChatMessages');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = sender === 'user' ? 'user-message' : 'ai-message';
+      messageDiv.textContent = message;
+      messagesContainer.appendChild(messageDiv);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function generateAIResponse(userMessage) {
+      const message = userMessage.toLowerCase();
+      
+      if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
+        return aiResponses.greeting[Math.floor(Math.random() * aiResponses.greeting.length)];
+      } else if (message.includes('property') || message.includes('house') || message.includes('home')) {
+        return aiResponses.property[Math.floor(Math.random() * aiResponses.property.length)];
+      } else if (message.includes('price') || message.includes('cost') || message.includes('value')) {
+        return aiResponses.pricing[Math.floor(Math.random() * aiResponses.pricing.length)];
+      } else {
+        return aiResponses.default[Math.floor(Math.random() * aiResponses.default.length)];
+      }
+    }
+
+    // Initialize theme
+    function initTheme() {
+      const savedTheme = localStorage.getItem('skylineTheme');
+      if (savedTheme === 'light') {
+        isDarkMode = false;
+        document.body.classList.add('light-mode');
+        toggleTheme(); // This will set the correct icon
+      }
+    }
+
+    // Enhanced authentication functions
+    function showMessage(message, type = 'success') {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${type}`;
+      messageDiv.textContent = message;
+      
+      const authCard = document.querySelector('.auth-card');
+      if (authCard) {
+        authCard.insertBefore(messageDiv, authCard.firstChild);
+      }
+      
+      setTimeout(() => {
+        messageDiv.remove();
+      }, 5000);
+    }
+
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function validatePassword(password) {
+      return password.length >= 6;
+    }
+
+    function handleAuth(event) {
+      event.preventDefault();
+      const form = event.target;
+      const email = form.querySelector('input[type="email"]').value;
+      const password = form.querySelector('input[type="password"]').value;
+      const name = form.querySelector('input[name="name"]')?.value;
+
+      // Validation
+      if (!validateEmail(email)) {
+        showMessage('Please enter a valid email address', 'error');
+        return;
+      }
+
+      if (!validatePassword(password)) {
+        showMessage('Password must be at least 6 characters', 'error');
+        return;
+      }
+
+      if (currentAuthTab === 'signup' && (!name || name.length < 2)) {
+        showMessage('Please enter your full name', 'error');
+        return;
+      }
+
+      // Simulate authentication
+      const btn = form.querySelector('button[type="submit"]');
+      const originalText = btn.textContent;
+      btn.innerHTML = '<span class="loading"></span> Authenticating...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        if (currentAuthTab === 'signup') {
+          currentUser = {
+            id: Date.now(),
+            name: name,
+            email: email,
+            avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=00bfae&color=fff`
+          };
+          showMessage('Account created successfully! Welcome to Skyline Realty.');
+          showNotificationDot(); // Show notification for new user
+        } else {
+          currentUser = {
+            id: 1,
+            name: email.split('@')[0],
+            email: email,
+            avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(email.split('@')[0])}&background=00bfae&color=fff`
+          };
+          showMessage('Welcome back!');
+        }
+
+        localStorage.setItem('skylineUser', JSON.stringify(currentUser));
+        btn.textContent = originalText;
+        btn.disabled = false;
+        
+        setTimeout(() => {
+          renderHome();
+        }, 1000);
+      }, 2000);
+    }
+
+    function loginWithGoogle() {
+      const btn = document.querySelector('.google-btn');
+      const originalText = btn.textContent;
+      btn.innerHTML = '<span class="loading"></span> Connecting...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        currentUser = {
+          id: Date.now(),
+          name: 'Google User',
+          email: 'user@gmail.com',
+          avatar: 'https://ui-avatars.com/api/?name=Google+User&background=00bfae&color=fff'
+        };
+        localStorage.setItem('skylineUser', JSON.stringify(currentUser));
+        btn.textContent = originalText;
+        btn.disabled = false;
+        showMessage('Successfully signed in with Google!');
+        showNotificationDot();
+        
+        setTimeout(() => {
+          renderHome();
+        }, 1000);
+      }, 2000);
+    }
+
+    function logout() {
+      currentUser = null;
+      localStorage.removeItem('skylineUser');
+      renderAuth();
+    }
+
+    // Render functions
+    function renderAuth() {
+      document.getElementById('app').innerHTML = `
+        <div class="auth-container">
+          <div class="auth-card">
+            <div class="auth-header">
+              <h1>Skyline Realty</h1>
+              <p>Find your perfect home with confidence</p>
+            </div>
+            
+            <div class="auth-tabs">
+              <div class="auth-tab ${currentAuthTab === 'login' ? 'active' : ''}" onclick="switchAuthTab('login')">
+                Sign In
+              </div>
+              <div class="auth-tab ${currentAuthTab === 'signup' ? 'active' : ''}" onclick="switchAuthTab('signup')">
+                Sign Up
+              </div>
+            </div>
+
+            <form onsubmit="handleAuth(event)">
+              ${currentAuthTab === 'signup' ? `
+                <div class="form-group">
+                  <label for="name">Full Name</label>
+                  <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+              ` : ''}
+              
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+              </div>
+              
+              <button type="submit" class="auth-btn">
+                ${currentAuthTab === 'login' ? 'Sign In' : 'Create Account'}
+              </button>
+            </form>
+
+            <div class="divider">
+              <span>or continue with</span>
+            </div>
+
+            <button class="google-btn" onclick="loginWithGoogle()">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google">
+              Google
+            </button>
+
+            <div class="auth-footer">
+              ${currentAuthTab === 'login' ? 
+                "Don't have an account? " : 
+                "Already have an account? "
+              }
+              <a href="#" onclick="switchAuthTab('${currentAuthTab === 'login' ? 'signup' : 'login'}')">
+                ${currentAuthTab === 'login' ? 'Sign up' : 'Sign in'}
+              </a>
+            </div>
+
+            <div class="social-icons">
+              <a href="#" class="social-icon facebook" title="Follow us on Facebook">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-icon twitter" title="Follow us on Twitter">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="social-icon instagram" title="Follow us on Instagram">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="#" class="social-icon linkedin" title="Connect on LinkedIn">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a href="#" class="social-icon youtube" title="Watch our videos">
+                <i class="fab fa-youtube"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function switchAuthTab(tab) {
+      currentAuthTab = tab;
+      renderAuth();
+    }
+
+    function renderHome() {
+      document.getElementById('app').innerHTML = `
+        <div class="navbar">
+          <span class="logo">SKYLINE REALTY</span>
+          <nav>
+            <a href="#" class="active">Home</a>
+            <a href="#" onclick="showProperties()">Properties</a>
+            <a href="#" onclick="showAbout()">About</a>
+            <a href="#" onclick="showContact()">Contact</a>
+            <button class="cta-btn" onclick="scrollToSearch()">Find a Home</button>
+            <button class="cta-btn" style="background:var(--bg-card);color:var(--text);margin-left:0.5rem;" onclick="logout()">
+              Logout
+            </button>
+          </nav>
+        </div>
+
+        <div class="hero">
+          <h1 class="hero-title">Find Your Dream Home</h1>
+          <p class="hero-subtitle">Discover luxury properties with our expert real estate services. Your perfect home is waiting.</p>
+          
+          <div class="search-container">
+            <div class="search-tabs">
+              <div class="search-tab active">Buy</div>
+              <div class="search-tab">Rent</div>
+              <div class="search-tab">Sell</div>
+            </div>
+            
+            <form class="search-form" onsubmit="handleSearch(event)">
+              <input type="text" placeholder="Location, city, or zip code" required>
+              <select>
+                <option>Property Type</option>
+                <option>House</option>
+                <option>Condo</option>
+                <option>Townhouse</option>
+                <option>Land</option>
+              </select>
+              <button type="submit" class="search-btn">Search</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="properties-section">
+          <div class="section-header">
+            <h2>Featured Properties</h2>
+            <p>Explore our handpicked selection of premium properties</p>
+          </div>
+          
+          <div class="properties-grid">
+            ${properties.map(property => `
+              <div class="property-card" onclick="showPropertyDetails(${property.id})">
+                <img src="${property.image}" alt="${property.title}" class="property-image">
+                <div class="property-info">
+                  <div class="property-price">${property.price}</div>
+                  <h3 class="property-title">${property.title}</h3>
+                  <p class="property-location">${property.location}</p>
+                  <div class="property-features">
+                    <span class="feature">🛏️ ${property.beds} beds</span>
+                    <span class="feature">🛁 ${property.baths} baths</span>
+                    <span class="feature">🏠 ${property.sqft} sqft</span>
+                    <span class="feature">📍 ${property.type}</span>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function handleSearch(event) {
+      event.preventDefault();
+      showMessage('Search functionality coming soon! This would integrate with a real estate database.');
+    }
+
+    function showPropertyDetails(id) {
+      const property = properties.find(p => p.id === id);
+      if (property) {
+        showMessage(`Viewing details for ${property.title}. Property detail pages coming soon!`);
+      }
+    }
+
+    function showProperties() {
+      showMessage('Properties page coming soon! This would show all available listings with filters.');
+    }
+
+    function showAbout() {
+      showMessage('About page coming soon! This would show company information and team details.');
+    }
+
+    function showContact() {
+      showMessage('Contact page coming soon! This would include contact forms and office locations.');
+    }
+
+    function scrollToSearch() {
+      const hero = document.querySelector('.hero');
+      if (hero) hero.scrollIntoView({behavior:'smooth'});
+    }
+
+    // Initialize app
+    function init() {
+      initTheme();
+      
+      const savedUser = localStorage.getItem('skylineUser');
+      if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+        renderHome();
+      } else {
+        renderAuth();
+      }
+
+      // Simulate notifications
+      setTimeout(() => {
+        showNotificationDot();
+      }, 5000);
+    }
+
+    // Start the app
+    window.onload = init;
+  </script>
+</body>
+</html> 

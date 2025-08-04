@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sell Your Property - Skyline Realty</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --accent: #00bfae;
+      --accent2: #1de9b6;
+      --bg: #0a0a0a;
+      --bg-card: #1a1a1a;
+      --text: #ffffff;
+      --text-muted: #a0a0a0;
+      --border: #333333;
+      --gradient: linear-gradient(135deg, #00bfae 0%, #1de9b6 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3vw;
+      background: rgba(26,26,26,0.95);
+      backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .navbar nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .navbar nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .navbar nav a:hover {
+      color: var(--accent);
+    }
+
+    .navbar nav a.active {
+      color: var(--accent);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .sell-form {
+      background: var(--bg-card);
+      padding: 3rem;
+      border-radius: 20px;
+      max-width: 800px;
+      margin: 2rem auto;
+      border: 1px solid var(--border);
+    }
+
+    .form-section {
+      margin-bottom: 2rem;
+    }
+
+    .form-section h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .form-group textarea {
+      height: 100px;
+      resize: vertical;
+    }
+
+    .submit-btn {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      font-size: 1.1rem;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,191,174,0.3);
+    }
+
+    .features {
+      padding: 4rem 3vw;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-card i {
+      font-size: 3rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card p {
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .sell-form {
+        margin: 1rem;
+        padding: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <span class="logo">SKYLINE REALTY</span>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="properties.html">Properties</a>
+      <a href="buy.html">Buy</a>
+      <a href="rent.html">Rent</a>
+      <a href="sell.html" class="active">Sell</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+
+  <div class="hero">
+    <h1>Sell Your Property</h1>
+    <p>Get the best value for your property with our expert selling services</p>
+  </div>
+
+  <div class="sell-form">
+    <form onsubmit="handleSellForm(event)">
+      <div class="form-section">
+        <h3>Property Information</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Property Type</label>
+            <select required>
+              <option value="">Select Property Type</option>
+              <option value="house">House</option>
+              <option value="condo">Condo</option>
+              <option value="townhouse">Townhouse</option>
+              <option value="apartment">Apartment</option>
+              <option value="land">Land</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Property Address</label>
+            <input type="text" placeholder="Enter full address" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Number of Bedrooms</label>
+            <input type="number" min="0" placeholder="e.g., 3" required>
+          </div>
+          <div class="form-group">
+            <label>Number of Bathrooms</label>
+            <input type="number" min="0" step="0.5" placeholder="e.g., 2.5" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Square Footage</label>
+          <input type="number" placeholder="e.g., 2000" required>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Pricing & Details</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Desired Sale Price</label>
+            <input type="number" placeholder="e.g., 500000" required>
+          </div>
+          <div class="form-group">
+            <label>Property Condition</label>
+            <select required>
+              <option value="">Select Condition</option>
+              <option value="excellent">Excellent</option>
+              <option value="good">Good</option>
+              <option value="fair">Fair</option>
+              <option value="needs-work">Needs Work</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Property Description</label>
+          <textarea placeholder="Describe your property, features, and any special highlights..."></textarea>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Contact Information</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" placeholder="Your full name" required>
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" placeholder="Your phone number" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="Your email address" required>
+        </div>
+        <div class="form-group">
+          <label>Preferred Contact Method</label>
+          <select required>
+            <option value="">Select preference</option>
+            <option value="phone">Phone</option>
+            <option value="email">Email</option>
+            <option value="both">Both</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">Submit Property for Sale</button>
+    </form>
+  </div>
+
+  <div class="features">
+    <div class="feature-card">
+      <i class="fas fa-chart-line"></i>
+      <h3>Market Analysis</h3>
+      <p>Get a comprehensive market analysis to determine the optimal selling price for your property</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-camera"></i>
+      <h3>Professional Photography</h3>
+      <p>High-quality photos and virtual tours to showcase your property in the best light</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-handshake"></i>
+      <h3>Expert Negotiation</h3>
+      <p>Our experienced agents will negotiate the best possible deal on your behalf</p>
+    </div>
+  </div>
+
+  <script>
+    function handleSellForm(event) {
+      event.preventDefault();
+      
+      // Get form data
+      const formData = new FormData(event.target);
+      const data = Object.fromEntries(formData);
+      
+      // Simulate form submission
+      const submitBtn = event.target.querySelector('.submit-btn');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = 'Submitting...';
+      submitBtn.disabled = true;
+      
+      setTimeout(() => {
+        alert(`Thank you for submitting your property!\n\nOur team will review your information and contact you within 24 hours to discuss the next steps.\n\nProperty: ${data.propertyType || 'Property'}\nAddress: ${data.address || 'Address provided'}\nPrice: $${data.price || 'Price provided'}`);
+        
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+        event.target.reset();
+      }, 2000);
+    }
+  </script>
+</body>
+</html> 

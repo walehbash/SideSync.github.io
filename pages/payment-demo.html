@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment Demo - Skyline Realty</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --accent: #00bfae;
+      --accent2: #1de9b6;
+      --bg: #0a0a0a;
+      --bg-card: #1a1a1a;
+      --text: #ffffff;
+      --text-muted: #a0a0a0;
+      --border: #333333;
+      --gradient: linear-gradient(135deg, #00bfae 0%, #1de9b6 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3vw;
+      background: rgba(26,26,26,0.95);
+      backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .payment-container {
+      max-width: 800px;
+      margin: 4rem auto;
+      padding: 2rem;
+    }
+
+    .payment-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .payment-header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .payment-header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .property-summary {
+      background: var(--bg-card);
+      padding: 2rem;
+      border-radius: 15px;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+    }
+
+    .property-info {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .property-image {
+      width: 120px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .property-details h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .property-details p {
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .price-breakdown {
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+    }
+
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .price-row.total {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--accent);
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
+
+    .payment-methods {
+      background: var(--bg-card);
+      padding: 2rem;
+      border-radius: 15px;
+      border: 1px solid var(--border);
+    }
+
+    .payment-methods h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .payment-option {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .payment-option:hover {
+      border-color: var(--accent);
+      background: rgba(0,191,174,0.05);
+    }
+
+    .payment-option.selected {
+      border-color: var(--accent);
+      background: rgba(0,191,174,0.1);
+    }
+
+    .payment-option-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .payment-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      font-size: 1.2rem;
+    }
+
+    .paypal-icon {
+      background: #0070ba;
+      color: white;
+    }
+
+    .crypto-icon {
+      background: #f7931a;
+      color: white;
+    }
+
+    .card-icon {
+      background: var(--accent);
+      color: white;
+    }
+
+    .payment-option h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .payment-option p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .crypto-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .crypto-option {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .crypto-option:hover {
+      border-color: var(--accent);
+    }
+
+    .crypto-option.selected {
+      border-color: var(--accent);
+      background: rgba(0,191,174,0.1);
+    }
+
+    .crypto-option i {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .crypto-option .bitcoin { color: #f7931a; }
+    .crypto-option .ethereum { color: #627eea; }
+    .crypto-option .usdc { color: #2775ca; }
+    .crypto-option .solana { color: #9945ff; }
+    .crypto-option .cardano { color: #0033ad; }
+    .crypto-option .polygon { color: #8247e5; }
+
+    .crypto-option small {
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      margin-top: 0.2rem;
+    }
+
+    .pay-button {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      margin-top: 2rem;
+    }
+
+    .pay-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,191,174,0.3);
+    }
+
+    .pay-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .demo-notice {
+      background: rgba(255, 193, 7, 0.1);
+      border: 1px solid rgba(255, 193, 7, 0.3);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .demo-notice i {
+      color: #ffc107;
+      margin-right: 0.5rem;
+    }
+
+    .card-form, .paypal-form {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .form-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      flex: 1;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg-card);
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .paypal-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .paypal-info i {
+      color: var(--accent);
+    }
+
+    @media (max-width: 768px) {
+      .payment-container {
+        padding: 1rem;
+      }
+      
+      .property-info {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .crypto-options {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .form-row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <span class="logo">SKYLINE REALTY</span>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="properties.html">Properties</a>
+      <a href="buy.html">Buy</a>
+      <a href="rent.html">Rent</a>
+      <a href="sell.html">Sell</a>
+      <a href="payment-demo.html" class="active">Payment Demo</a>
+    </nav>
+  </div>
+
+  <div class="payment-container">
+    <div class="demo-notice">
+      <i class="fas fa-info-circle"></i>
+      This is a demo payment system. No real transactions will be processed.
+    </div>
+
+    <div class="payment-header">
+      <h1>Complete Your Purchase</h1>
+      <p>Choose your preferred payment method to secure your property</p>
+    </div>
+
+    <div class="property-summary">
+      <div class="property-info">
+        <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=300&q=80" alt="Property" class="property-image">
+        <div class="property-details">
+          <h3>Cart Items</h3>
+          <p id="cartItemsCount">Loading cart...</p>
+          <p id="cartItemsList">Loading items...</p>
+        </div>
+      </div>
+      
+      <div class="price-breakdown">
+        <div class="price-row">
+          <span>Properties Total</span>
+          <span id="propertiesTotal">$0</span>
+        </div>
+        <div class="price-row">
+          <span>Processing Fee (2%)</span>
+          <span id="processingFee">$0</span>
+        </div>
+        <div class="price-row">
+          <span>Closing Costs</span>
+          <span id="closingCosts">$0</span>
+        </div>
+        <div class="price-row">
+          <span>Property Tax (1 year)</span>
+          <span id="propertyTax">$0</span>
+        </div>
+        <div class="price-row">
+          <span>Insurance (1 year)</span>
+          <span id="insurance">$0</span>
+        </div>
+        <div class="price-row total">
+          <span>Total Amount</span>
+          <span id="totalAmount">$0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="payment-methods">
+      <h2>Select Payment Method</h2>
+      
+      <div class="payment-option" onclick="selectPayment('crypto')">
+        <div class="payment-option-header">
+          <div class="payment-icon crypto-icon">
+            <i class="fab fa-bitcoin"></i>
+          </div>
+          <div>
+            <h3>Cryptocurrency</h3>
+            <p>Pay with Bitcoin, Ethereum, USDC, or other popular cryptos</p>
+          </div>
+        </div>
+        <div class="crypto-options" id="cryptoOptions" style="display: none;">
+          <div class="crypto-option" onclick="selectCrypto('bitcoin')">
+            <i class="fab fa-bitcoin bitcoin"></i>
+            <div>Bitcoin</div>
+            <small>BTC</small>
+          </div>
+          <div class="crypto-option" onclick="selectCrypto('ethereum')">
+            <i class="fab fa-ethereum ethereum"></i>
+            <div>Ethereum</div>
+            <small>ETH</small>
+          </div>
+          <div class="crypto-option" onclick="selectCrypto('usdc')">
+            <i class="fas fa-coins usdc"></i>
+            <div>USDC</div>
+            <small>USDC</small>
+          </div>
+          <div class="crypto-option" onclick="selectCrypto('solana')">
+            <i class="fas fa-coins solana"></i>
+            <div>Solana</div>
+            <small>SOL</small>
+          </div>
+          <div class="crypto-option" onclick="selectCrypto('cardano')">
+            <i class="fas fa-coins cardano"></i>
+            <div>Cardano</div>
+            <small>ADA</small>
+          </div>
+          <div class="crypto-option" onclick="selectCrypto('polygon')">
+            <i class="fas fa-coins polygon"></i>
+            <div>Polygon</div>
+            <small>MATIC</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="payment-option" onclick="selectPayment('card')">
+        <div class="payment-option-header">
+          <div class="payment-icon card-icon">
+            <i class="fas fa-credit-card"></i>
+          </div>
+          <div>
+            <h3>Credit/Debit Card</h3>
+            <p>Pay with Visa, Mastercard, or American Express</p>
+          </div>
+        </div>
+        <div class="card-form" id="cardForm" style="display: none;">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Card Number</label>
+              <input type="text" placeholder="1234 5678 9012 3456" maxlength="19" onkeyup="formatCardNumber(this)">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Cardholder Name</label>
+              <input type="text" placeholder="John Doe">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Expiry Date</label>
+              <input type="text" placeholder="MM/YY" maxlength="5" onkeyup="formatExpiry(this)">
+            </div>
+            <div class="form-group">
+              <label>CVV</label>
+              <input type="text" placeholder="123" maxlength="4">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="payment-option" onclick="selectPayment('paypal')">
+        <div class="payment-option-header">
+          <div class="payment-icon paypal-icon">
+            <i class="fab fa-paypal"></i>
+          </div>
+          <div>
+            <h3>PayPal</h3>
+            <p>Pay securely with your PayPal account</p>
+          </div>
+        </div>
+        <div class="paypal-form" id="paypalForm" style="display: none;">
+          <div class="form-group">
+            <label>PayPal Email</label>
+            <input type="email" placeholder="your-email@paypal.com">
+          </div>
+          <div class="paypal-info">
+            <i class="fas fa-shield-alt"></i>
+            <span>Your payment will be processed securely through PayPal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="pay-button" id="payButton" onclick="processPayment()" disabled>
+      Select Payment Method
+    </button>
+  </div>
+
+  <script>
+    let selectedPayment = null;
+    let selectedCrypto = null;
+    let cartData = null;
+    let totalAmount = 0;
+
+    // Load cart data on page load
+    function loadCartData() {
+      const checkoutCart = localStorage.getItem('checkoutCart');
+      if (checkoutCart) {
+        cartData = JSON.parse(checkoutCart);
+        updateCartDisplay();
+      } else {
+        // Fallback to demo data if no cart
+        cartData = [{
+          id: 1,
+          title: "Modern Family Home",
+          location: "Austin, TX",
+          price: "$485,000",
+          quantity: 1
+        }];
+        updateCartDisplay();
+      }
+    }
+
+    function updateCartDisplay() {
+      if (!cartData || cartData.length === 0) {
+        document.getElementById('cartItemsCount').textContent = 'No items in cart';
+        document.getElementById('cartItemsList').textContent = 'Please add items to cart first';
+        return;
+      }
+
+      const totalProperties = cartData.reduce((total, item) => total + item.quantity, 0);
+      const propertiesTotal = cartData.reduce((total, item) => {
+        const price = parseInt(item.price.replace(/[$,]/g, ''));
+        return total + (price * item.quantity);
+      }, 0);
+
+      const processingFee = propertiesTotal * 0.02;
+      const closingCosts = propertiesTotal * 0.03;
+      const propertyTax = propertiesTotal * 0.02;
+      const insurance = propertiesTotal * 0.005;
+      totalAmount = propertiesTotal + processingFee + closingCosts + propertyTax + insurance;
+
+      // Update display
+      document.getElementById('cartItemsCount').textContent = `${totalProperties} properties selected`;
+      document.getElementById('cartItemsList').textContent = cartData.map(item => 
+        `${item.title} (${item.location}) - Qty: ${item.quantity}`
+      ).join(', ');
+      
+      document.getElementById('propertiesTotal').textContent = `$${propertiesTotal.toLocaleString()}`;
+      document.getElementById('processingFee').textContent = `$${processingFee.toLocaleString()}`;
+      document.getElementById('closingCosts').textContent = `$${closingCosts.toLocaleString()}`;
+      document.getElementById('propertyTax').textContent = `$${propertyTax.toLocaleString()}`;
+      document.getElementById('insurance').textContent = `$${insurance.toLocaleString()}`;
+      document.getElementById('totalAmount').textContent = `$${totalAmount.toLocaleString()}`;
+    }
+
+    function selectPayment(method) {
+      selectedPayment = method;
+      
+      // Remove selected class from all options
+      document.querySelectorAll('.payment-option').forEach(option => {
+        option.classList.remove('selected');
+      });
+      
+      // Add selected class to clicked option
+      event.currentTarget.classList.add('selected');
+      
+      // Show/hide crypto options
+      const cryptoOptions = document.getElementById('cryptoOptions');
+      if (method === 'crypto') {
+        cryptoOptions.style.display = 'grid';
+      } else {
+        cryptoOptions.style.display = 'none';
+        selectedCrypto = null;
+      }
+
+      // Show/hide card form
+      const cardForm = document.getElementById('cardForm');
+      if (method === 'card') {
+        cardForm.style.display = 'block';
+      } else {
+        cardForm.style.display = 'none';
+      }
+
+      // Show/hide paypal form
+      const paypalForm = document.getElementById('paypalForm');
+      if (method === 'paypal') {
+        paypalForm.style.display = 'block';
+      } else {
+        paypalForm.style.display = 'none';
+      }
+      
+      updatePayButton();
+    }
+
+    function selectCrypto(crypto) {
+      selectedCrypto = crypto;
+      
+      // Remove selected class from all crypto options
+      document.querySelectorAll('.crypto-option').forEach(option => {
+        option.classList.remove('selected');
+      });
+      
+      // Add selected class to clicked option
+      event.currentTarget.classList.add('selected');
+      
+      updatePayButton();
+    }
+
+    function formatCardNumber(input) {
+      let value = input.value.replace(/\s/g, '');
+      let formattedValue = '';
+      for (let i = 0; i < value.length; i++) {
+        if (i > 0 && i % 4 === 0) {
+          formattedValue += ' ';
+        }
+        formattedValue += value[i];
+      }
+      input.value = formattedValue;
+    }
+
+    function formatExpiry(input) {
+      let value = input.value.replace(/\s/g, '');
+      let formattedValue = '';
+      for (let i = 0; i < value.length; i++) {
+        if (i > 0 && i % 2 === 0) {
+          formattedValue += '/';
+        }
+        formattedValue += value[i];
+      }
+      input.value = formattedValue;
+    }
+
+    function updatePayButton() {
+      const payButton = document.getElementById('payButton');
+      
+      if (selectedPayment === 'crypto' && !selectedCrypto) {
+        payButton.textContent = 'Select Cryptocurrency';
+        payButton.disabled = true;
+      } else if (selectedPayment === 'card' && !document.getElementById('cardForm').style.display === 'block') {
+        payButton.textContent = 'Enter Card Details';
+        payButton.disabled = true;
+      } else if (selectedPayment === 'paypal' && !document.getElementById('paypalForm').style.display === 'block') {
+        payButton.textContent = 'Enter PayPal Email';
+        payButton.disabled = true;
+      } else if (selectedPayment) {
+        payButton.textContent = `Pay with ${getPaymentMethodName()}`;
+        payButton.disabled = false;
+      } else {
+        payButton.textContent = 'Select Payment Method';
+        payButton.disabled = true;
+      }
+    }
+
+    function getPaymentMethodName() {
+      if (selectedPayment === 'paypal') return 'PayPal';
+      if (selectedPayment === 'crypto') return selectedCrypto.charAt(0).toUpperCase() + selectedCrypto.slice(1);
+      if (selectedPayment === 'card') return 'Card';
+      return '';
+    }
+
+    function processPayment() {
+      const payButton = document.getElementById('payButton');
+      const originalText = payButton.textContent;
+      
+      payButton.textContent = 'Processing...';
+      payButton.disabled = true;
+      
+      setTimeout(() => {
+        if (selectedPayment === 'paypal') {
+          const paypalEmail = document.querySelector('#paypalForm input[type="email"]').value;
+          if (!paypalEmail) {
+            alert('Please enter your PayPal email address.');
+            payButton.textContent = originalText;
+            payButton.disabled = false;
+            return;
+          }
+          alert(`PayPal payment processed successfully!\nEmail: ${paypalEmail}\nAmount: $${totalAmount.toLocaleString()}\nYou will receive a confirmation email shortly.`);
+        } else if (selectedPayment === 'crypto') {
+          const cryptoRates = {
+            bitcoin: 0.0123,
+            ethereum: 0.187,
+            usdc: totalAmount,
+            solana: 125.5,
+            cardano: 12550,
+            polygon: totalAmount
+          };
+          const rate = cryptoRates[selectedCrypto];
+          const symbol = selectedCrypto.toUpperCase();
+          alert(`${selectedCrypto.charAt(0).toUpperCase() + selectedCrypto.slice(1)} payment processed successfully!\nAmount: ${rate} ${symbol}\nTransaction hash: 0x${Math.random().toString(16).substr(2, 8)}...${Math.random().toString(16).substr(2, 8)}\nBlock confirmation: 3/6`);
+        } else if (selectedPayment === 'card') {
+          const cardNumber = document.querySelector('#cardForm input[placeholder*="1234"]').value;
+          const cardholder = document.querySelector('#cardForm input[placeholder*="John"]').value;
+          if (!cardNumber || !cardholder) {
+            alert('Please fill in all card details.');
+            payButton.textContent = originalText;
+            payButton.disabled = false;
+            return;
+          }
+          alert(`Card payment processed successfully!\nCard: **** **** **** ${cardNumber.slice(-4)}\nCardholder: ${cardholder}\nAmount: $${totalAmount.toLocaleString()}\nYour property purchase is complete!`);
+        }
+        
+        // Clear cart after successful payment
+        localStorage.removeItem('skylineCart');
+        localStorage.removeItem('checkoutCart');
+        
+        payButton.textContent = originalText;
+        payButton.disabled = false;
+        
+        // Redirect to home page after payment
+        setTimeout(() => {
+          window.location.href = '../index.html';
+        }, 2000);
+      }, 2000);
+    }
+
+    // Initialize page
+    loadCartData();
+  </script>
+</body>
+</html> 

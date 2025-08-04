@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Properties - Skyline Realty</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --accent: #00bfae;
+      --accent2: #1de9b6;
+      --bg: #0a0a0a;
+      --bg-card: #1a1a1a;
+      --text: #ffffff;
+      --text-muted: #a0a0a0;
+      --border: #333333;
+      --gradient: linear-gradient(135deg, #00bfae 0%, #1de9b6 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3vw;
+      background: rgba(26,26,26,0.95);
+      backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .navbar nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .navbar nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .navbar nav a:hover {
+      color: var(--accent);
+    }
+
+    .navbar nav a.active {
+      color: var(--accent);
+    }
+
+    .page-header {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+    }
+
+    .page-header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-header p {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+    }
+
+    .filters {
+      background: var(--bg-card);
+      padding: 2rem;
+      margin: 2rem 3vw;
+      border-radius: 15px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .filter-group label {
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .filter-group input,
+    .filter-group select {
+      padding: 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .filter-group input:focus,
+    .filter-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .properties-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+      padding: 2rem 3vw;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .property-card {
+      background: var(--bg-card);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .property-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .property-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .property-info {
+      padding: 1.5rem;
+    }
+
+    .property-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .property-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .property-location {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .property-features {
+      display: flex;
+      gap: 1rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 2rem;
+    }
+
+    .pagination button {
+      padding: 0.8rem 1.2rem;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .pagination button:hover,
+    .pagination button.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .properties-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        padding: 1rem;
+      }
+      
+      .filters {
+        margin: 1rem;
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <span class="logo">SKYLINE REALTY</span>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="properties.html" class="active">Properties</a>
+      <a href="buy.html">Buy</a>
+      <a href="rent.html">Rent</a>
+      <a href="sell.html">Sell</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+
+  <div class="page-header">
+    <h1>All Properties</h1>
+    <p>Discover your perfect home from our extensive collection</p>
+  </div>
+
+  <div class="filters">
+    <div class="filter-group">
+      <label>Location</label>
+      <input type="text" placeholder="City, State, or ZIP" id="locationFilter">
+    </div>
+    <div class="filter-group">
+      <label>Price Range</label>
+      <select id="priceFilter">
+        <option value="">Any Price</option>
+        <option value="0-200000">Under $200,000</option>
+        <option value="200000-400000">$200,000 - $400,000</option>
+        <option value="400000-600000">$400,000 - $600,000</option>
+        <option value="600000-1000000">$600,000 - $1,000,000</option>
+        <option value="1000000+">$1,000,000+</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Property Type</label>
+      <select id="typeFilter">
+        <option value="">Any Type</option>
+        <option value="house">House</option>
+        <option value="condo">Condo</option>
+        <option value="townhouse">Townhouse</option>
+        <option value="apartment">Apartment</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Bedrooms</label>
+      <select id="bedFilter">
+        <option value="">Any</option>
+        <option value="1">1+</option>
+        <option value="2">2+</option>
+        <option value="3">3+</option>
+        <option value="4">4+</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="properties-grid" id="propertiesGrid">
+    <!-- Properties will be loaded here -->
+  </div>
+
+  <div class="pagination" id="pagination">
+    <!-- Pagination will be generated here -->
+  </div>
+
+  <script>
+    // Enhanced property data with realistic US market properties
+    const allProperties = [
+      {
+        id: 1,
+        title: "Modern Family Home",
+        location: "Austin, TX",
+        price: 485000,
+        image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: 2800,
+        type: "house",
+        status: "For Sale"
+      },
+      {
+        id: 2,
+        title: "Downtown Condo",
+        location: "Miami, FL",
+        price: 320000,
+        image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+        beds: 2,
+        baths: 2,
+        sqft: 1200,
+        type: "condo",
+        status: "For Sale"
+      },
+      {
+        id: 3,
+        title: "Suburban Ranch",
+        location: "Phoenix, AZ",
+        price: 395000,
+        image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 2,
+        sqft: 2100,
+        type: "house",
+        status: "For Sale"
+      },
+      {
+        id: 4,
+        title: "Waterfront Townhouse",
+        location: "Seattle, WA",
+        price: 675000,
+        image: "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 2.5,
+        sqft: 1800,
+        type: "townhouse",
+        status: "For Sale"
+      },
+      {
+        id: 5,
+        title: "Luxury Penthouse",
+        location: "New York, NY",
+        price: 1250000,
+        image: "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 3,
+        sqft: 2200,
+        type: "penthouse",
+        status: "For Sale"
+      },
+      {
+        id: 6,
+        title: "Family Estate",
+        location: "Dallas, TX",
+        price: 890000,
+        image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=80",
+        beds: 5,
+        baths: 4,
+        sqft: 4200,
+        type: "estate",
+        status: "For Sale"
+      },
+      {
+        id: 7,
+        title: "Urban Loft",
+        location: "Chicago, IL",
+        price: 445000,
+        image: "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=600&q=80",
+        beds: 2,
+        baths: 2,
+        sqft: 1600,
+        type: "loft",
+        status: "For Sale"
+      },
+      {
+        id: 8,
+        title: "Beach House",
+        location: "San Diego, CA",
+        price: 1250000,
+        image: "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: 2800,
+        type: "house",
+        status: "For Sale"
+      },
+      {
+        id: 9,
+        title: "Mountain Cabin",
+        location: "Denver, CO",
+        price: 525000,
+        image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 2,
+        sqft: 1900,
+        type: "cabin",
+        status: "For Sale"
+      },
+      {
+        id: 10,
+        title: "Historic Brownstone",
+        location: "Boston, MA",
+        price: 875000,
+        image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3.5,
+        sqft: 3200,
+        type: "brownstone",
+        status: "For Sale"
+      },
+      {
+        id: 11,
+        title: "Modern Villa",
+        location: "Los Angeles, CA",
+        price: 1850000,
+        image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
+        beds: 5,
+        baths: 4,
+        sqft: 4500,
+        type: "villa",
+        status: "For Sale"
+      },
+      {
+        id: 12,
+        title: "Downtown Apartment",
+        location: "Portland, OR",
+        price: 285000,
+        image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+        beds: 1,
+        baths: 1,
+        sqft: 850,
+        type: "apartment",
+        status: "For Sale"
+      },
+      {
+        id: 13,
+        title: "Golf Course Home",
+        location: "Scottsdale, AZ",
+        price: 750000,
+        image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: 3100,
+        type: "house",
+        status: "For Sale"
+      },
+      {
+        id: 14,
+        title: "Tech Hub Condo",
+        location: "San Francisco, CA",
+        price: 1450000,
+        image: "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=600&q=80",
+        beds: 2,
+        baths: 2,
+        sqft: 1400,
+        type: "condo",
+        status: "For Sale"
+      },
+      {
+        id: 15,
+        title: "Suburban Family Home",
+        location: "Atlanta, GA",
+        price: 425000,
+        image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: 2600,
+        type: "house",
+        status: "For Sale"
+      },
+      {
+        id: 16,
+        title: "Luxury Estate",
+        location: "Greenwich, CT",
+        price: 3450000,
+        image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 4,
+        sqft: 3187,
+        type: "estate",
+        status: "For Sale"
+      },
+      {
+        id: 17,
+        title: "Coastal Mansion",
+        location: "Miami Beach, FL",
+        price: 3999000,
+        image: "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=600&q=80",
+        beds: 5,
+        baths: 5,
+        sqft: 3993,
+        type: "mansion",
+        status: "For Sale"
+      },
+      {
+        id: 18,
+        title: "Riverside Property",
+        location: "Brooktondale, NY",
+        price: 799000,
+        image: "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 3,
+        sqft: 3118,
+        type: "house",
+        status: "For Sale"
+      },
+      {
+        id: 19,
+        title: "Oceanfront Villa",
+        location: "Brick, NJ",
+        price: 1200000,
+        image: "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: 2800,
+        type: "villa",
+        status: "For Sale"
+      },
+      {
+        id: 20,
+        title: "University Town Home",
+        location: "Chapel Hill, NC",
+        price: 650000,
+        image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: 2688,
+        type: "house",
+        status: "For Sale"
+      },
+      {
+        id: 21,
+        title: "Plantation Style Home",
+        location: "Plant City, FL",
+        price: 1450000,
+        image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 4,
+        sqft: 4280,
+        type: "house",
+        status: "For Sale"
+      },
+      {
+        id: 22,
+        title: "Ridge Estate",
+        location: "Freehold, NJ",
+        price: 875000,
+        image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: 2306,
+        type: "estate",
+        status: "For Sale"
+      },
+      {
+        id: 23,
+        title: "Historic Townhouse",
+        location: "Haddon Township, NJ",
+        price: 365000,
+        image: "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=600&q=80",
+        beds: 2,
+        baths: 2,
+        sqft: 1188,
+        type: "townhouse",
+        status: "For Sale"
+      },
+      {
+        id: 24,
+        title: "Cherry Hill Home",
+        location: "Cherry Hill, NJ",
+        price: 399999,
+        image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 2,
+        sqft: 1332,
+        type: "house",
+        status: "For Sale"
+      },
+      {
+        id: 25,
+        title: "Jones Ferry Estate",
+        location: "Chapel Hill, NC",
+        price: 650000,
+        image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: 2688,
+        type: "estate",
+        status: "For Sale"
+      }
+    ];
+
+    let currentPage = 1;
+    const propertiesPerPage = 10;
+    let filteredProperties = [...allProperties];
+
+    function formatPrice(price) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(price);
+    }
+
+    function renderProperties() {
+      const startIndex = (currentPage - 1) * propertiesPerPage;
+      const endIndex = startIndex + propertiesPerPage;
+      const pageProperties = filteredProperties.slice(startIndex, endIndex);
+
+      const grid = document.getElementById('propertiesGrid');
+      grid.innerHTML = pageProperties.map(property => `
+        <div class="property-card" onclick="showPropertyDetails(${property.id})">
+          <img src="${property.image}" alt="${property.title}" class="property-image">
+          <div class="property-info">
+            <div class="property-price">${formatPrice(property.price)}</div>
+            <h3 class="property-title">${property.title}</h3>
+            <p class="property-location">${property.location}</p>
+            <div class="property-features">
+              <span class="feature">🛏️ ${property.beds} beds</span>
+              <span class="feature">🛁 ${property.baths} baths</span>
+              <span class="feature">🏠 ${property.sqft.toLocaleString()} sqft</span>
+              <span class="feature">📍 ${property.type}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      renderPagination();
+    }
+
+    function renderPagination() {
+      const totalPages = Math.ceil(filteredProperties.length / propertiesPerPage);
+      const pagination = document.getElementById('pagination');
+      
+      let paginationHTML = '';
+      
+      if (currentPage > 1) {
+        paginationHTML += `<button onclick="changePage(${currentPage - 1})">Previous</button>`;
+      }
+      
+      for (let i = 1; i <= totalPages; i++) {
+        if (i === currentPage) {
+          paginationHTML += `<button class="active">${i}</button>`;
+        } else {
+          paginationHTML += `<button onclick="changePage(${i})">${i}</button>`;
+        }
+      }
+      
+      if (currentPage < totalPages) {
+        paginationHTML += `<button onclick="changePage(${currentPage + 1})">Next</button>`;
+      }
+      
+      pagination.innerHTML = paginationHTML;
+    }
+
+    function changePage(page) {
+      currentPage = page;
+      renderProperties();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function filterProperties() {
+      const location = document.getElementById('locationFilter').value.toLowerCase();
+      const priceRange = document.getElementById('priceFilter').value;
+      const type = document.getElementById('typeFilter').value;
+      const beds = document.getElementById('bedFilter').value;
+
+      filteredProperties = allProperties.filter(property => {
+        const matchesLocation = !location || property.location.toLowerCase().includes(location);
+        const matchesType = !type || property.type === type;
+        const matchesBeds = !beds || property.beds >= parseInt(beds);
+        
+        let matchesPrice = true;
+        if (priceRange) {
+          const [min, max] = priceRange.split('-').map(p => p === '+' ? Infinity : parseInt(p));
+          matchesPrice = property.price >= min && (max === Infinity ? true : property.price <= max);
+        }
+
+        return matchesLocation && matchesType && matchesBeds && matchesPrice;
+      });
+
+      currentPage = 1;
+      renderProperties();
+    }
+
+    function showPropertyDetails(id) {
+      const property = allProperties.find(p => p.id === id);
+      if (property) {
+        alert(`Property Details:\n${property.title}\n${property.location}\n${formatPrice(property.price)}\n${property.beds} beds, ${property.baths} baths\n${property.sqft.toLocaleString()} sqft\n\n${property.description}`);
+      }
+    }
+
+    // Add event listeners for filters
+    document.getElementById('locationFilter').addEventListener('input', filterProperties);
+    document.getElementById('priceFilter').addEventListener('change', filterProperties);
+    document.getElementById('typeFilter').addEventListener('change', filterProperties);
+    document.getElementById('bedFilter').addEventListener('change', filterProperties);
+
+    // Initial render
+    renderProperties();
+  </script>
+</body>
+</html> 

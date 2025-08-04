@@ -1,0 +1,2564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Skyline Realty - Find Your Dream Home</title>
+  <meta name="description" content="Discover luxury properties with Skyline Realty. Find your perfect home with our expert real estate services.">
+  
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#00bfae">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Skyline Realty">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="Skyline Realty">
+  
+  <!-- PWA Icons -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>"/>
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏠</text></svg>">
+  <link rel="manifest" href="/manifest.json">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Dark Theme Colors */
+      --accent: #00bfae;
+      --accent2: #1de9b6;
+      --bg: #0a0a0a;
+      --bg-card: #1a1a1a;
+      --bg-card-hover: #252525;
+      --text: #ffffff;
+      --text-muted: #a0a0a0;
+      --text-secondary: #808080;
+      --border: #333333;
+      --shadow: 0 8px 32px rgba(0,0,0,0.4);
+      --shadow-light: 0 4px 16px rgba(0,0,0,0.2);
+      --gradient: linear-gradient(135deg, #00bfae 0%, #1de9b6 100%);
+      
+      /* Light Theme Colors */
+      --bg-light: #ffffff;
+      --bg-card-light: #f8f9fa;
+      --bg-card-hover-light: #e9ecef;
+      --text-light: #1a1a1a;
+      --text-muted-light: #6c757d;
+      --text-secondary-light: #495057;
+      --border-light: #dee2e6;
+      --shadow-light-theme: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: all 0.3s ease;
+      overflow-x: hidden;
+    }
+
+    body.light-mode {
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.85) 100%);
+      z-index: 0;
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode::before {
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+    }
+
+    #app {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+    }
+
+    body.light-mode .theme-toggle {
+      background: var(--bg-card-light);
+      border-color: var(--border-light);
+      box-shadow: var(--shadow-light-theme);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.05);
+    }
+
+    .theme-toggle svg {
+      width: 20px;
+      height: 20px;
+      color: var(--text);
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode .theme-toggle svg {
+      color: var(--text-light);
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3vw;
+      background: rgba(26,26,26,0.95);
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode .navbar {
+      background: rgba(248,249,250,0.95);
+      box-shadow: var(--shadow-light-theme);
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .navbar nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .navbar nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      position: relative;
+      padding: 0.5rem 0;
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode .navbar nav a {
+      color: var(--text-light);
+    }
+
+    .navbar nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--gradient);
+      transition: width 0.3s ease;
+    }
+
+    .navbar nav a:hover::after,
+    .navbar nav a.active::after {
+      width: 100%;
+    }
+
+    .navbar nav a:hover,
+    .navbar nav a.active {
+      color: var(--accent);
+    }
+
+    .navbar .cta-btn {
+      background: var(--gradient);
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      padding: 0.7rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      margin-left: 1rem;
+    }
+
+    .navbar .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,191,174,0.3);
+    }
+
+    /* Cart Styles */
+    .cart-link {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode .cart-link {
+      color: var(--text-light);
+      background: var(--bg-card-light);
+      border-color: var(--border-light);
+    }
+
+    .cart-link:hover {
+      background: var(--accent);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .cart-count {
+      background: #ff3b30;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      position: absolute;
+      top: -5px;
+      right: -5px;
+    }
+
+    .btn-primary {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 0.8rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,191,174,0.3);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.8rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    body.light-mode .btn-secondary {
+      background: var(--bg-card-light);
+      color: var(--text-light);
+      border-color: var(--border-light);
+    }
+
+    .btn-secondary:hover {
+      background: var(--accent);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    /* Login/Signup System */
+    .auth-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .auth-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 400px;
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode .auth-card {
+      background: var(--bg-card-light);
+      border-color: var(--border-light);
+      box-shadow: var(--shadow-light-theme);
+    }
+
+    .auth-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .auth-header h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .auth-header p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    body.light-mode .auth-header p {
+      color: var(--text-muted-light);
+    }
+
+    .auth-tabs {
+      display: flex;
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 2rem;
+    }
+
+    body.light-mode .auth-tabs {
+      background: var(--bg-card-light);
+    }
+
+    .auth-tab {
+      flex: 1;
+      padding: 0.8rem;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      color: var(--text-muted);
+    }
+
+    body.light-mode .auth-tab {
+      color: var(--text-muted-light);
+    }
+
+    .auth-tab.active {
+      background: var(--gradient);
+      color: #fff;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    body.light-mode .form-group label {
+      color: var(--text-light);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode .form-group input {
+      border-color: var(--border-light);
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,191,174,0.1);
+    }
+
+    .form-group input.error {
+      border-color: #ff3b30;
+      box-shadow: 0 0 0 3px rgba(255,59,48,0.2);
+      animation: redGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes redGlow {
+      0%, 100% {
+        box-shadow: 0 0 0 3px rgba(255,59,48,0.2);
+      }
+      50% {
+        box-shadow: 0 0 0 6px rgba(255,59,48,0.4);
+      }
+    }
+
+    .form-group.error label {
+      color: #ff3b30;
+    }
+
+    .form-group.error .error-message {
+      color: #ff3b30;
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+      display: block;
+    }
+
+    .form-group .error-message {
+      display: none;
+    }
+
+    .auth-btn {
+      width: 100%;
+      background: var(--gradient);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 1rem;
+    }
+
+    .auth-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,191,174,0.3);
+    }
+
+    .divider {
+      text-align: center;
+      margin: 1.5rem 0;
+      position: relative;
+      color: var(--text-muted);
+    }
+
+    body.light-mode .divider {
+      color: var(--text-muted-light);
+    }
+
+    .divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--border);
+    }
+
+    body.light-mode .divider::before {
+      background: var(--border-light);
+    }
+
+    .divider span {
+      background: var(--bg-card);
+      padding: 0 1rem;
+      font-size: 0.9rem;
+    }
+
+    body.light-mode .divider span {
+      background: var(--bg-card-light);
+    }
+
+    .google-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      color: #333;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.8rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    body.light-mode .google-btn {
+      border-color: var(--border-light);
+    }
+
+    .google-btn:hover {
+      background: #f8f9fa;
+      transform: translateY(-2px);
+    }
+
+    .google-btn svg {
+      width: 20px;
+      height: 20px;
+      margin-right: 0.8rem;
+    }
+
+    .auth-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    body.light-mode .auth-footer {
+      color: var(--text-muted-light);
+    }
+
+    .auth-footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    /* Hero Section */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 70vh;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+    }
+
+    body.light-mode .hero-subtitle {
+      color: var(--text-muted-light);
+    }
+
+    .search-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      max-width: 600px;
+      width: 90%;
+      margin: 0 auto;
+    }
+
+    body.light-mode .search-container {
+      background: var(--bg-card-light);
+      border-color: var(--border-light);
+      box-shadow: var(--shadow-light-theme);
+    }
+
+    .search-tabs {
+      display: flex;
+      margin-bottom: 1.5rem;
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 4px;
+    }
+
+    body.light-mode .search-tabs {
+      background: var(--bg-card-light);
+    }
+
+    .search-tab {
+      flex: 1;
+      padding: 0.8rem;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      color: var(--text-muted);
+    }
+
+    body.light-mode .search-tab {
+      color: var(--text-muted-light);
+    }
+
+    .search-tab.active {
+      background: var(--gradient);
+      color: #fff;
+    }
+
+    .search-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 1rem;
+      align-items: end;
+    }
+
+    .search-form input,
+    .search-form select {
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    body.light-mode .search-form input,
+    body.light-mode .search-form select {
+      border-color: var(--border-light);
+      background: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    .search-btn {
+      background: var(--gradient);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.8rem 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .search-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,191,174,0.3);
+    }
+
+    /* Property Cards */
+    .properties-section {
+      padding: 4rem 3vw;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    body.light-mode .section-header p {
+      color: var(--text-muted-light);
+    }
+
+    .properties-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .property-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    body.light-mode .property-card {
+      background: var(--bg-card-light);
+      border-color: var(--border-light);
+    }
+
+    .property-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow);
+    }
+
+    body.light-mode .property-card:hover {
+      box-shadow: var(--shadow-light-theme);
+    }
+
+    .property-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      transition: all 0.3s ease;
+    }
+
+    .property-card:hover .property-image {
+      transform: scale(1.05);
+    }
+
+    .property-info {
+      padding: 1.5rem;
+    }
+
+    .property-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .property-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    body.light-mode .property-title {
+      color: var(--text-light);
+    }
+
+    .property-location {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+
+    body.light-mode .property-location {
+      color: var(--text-muted-light);
+    }
+
+    .property-features {
+      display: flex;
+      gap: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    body.light-mode .property-features {
+      color: var(--text-secondary-light);
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem 2vw;
+      }
+
+      .navbar nav {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .search-form {
+        grid-template-columns: 1fr;
+      }
+
+      .properties-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .auth-card {
+        padding: 2rem;
+        margin: 1rem;
+      }
+    }
+
+    /* Loading Animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Success/Error Messages */
+    .message {
+      padding: 1rem;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    .message.success {
+      background: rgba(0,191,174,0.1);
+      color: var(--accent);
+      border: 1px solid rgba(0,191,174,0.3);
+    }
+
+    .message.error {
+      background: rgba(255,59,48,0.1);
+      color: #ff3b30;
+      border: 1px solid rgba(255,59,48,0.3);
+    }
+
+    /* AI Chat Widget Styles */
+    .ai-chat-widget {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background: var(--gradient);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,191,174,0.3);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .ai-chat-widget:hover {
+      transform: scale(1.1);
+    }
+
+    .ai-chat-widget i {
+      color: white;
+      font-size: 1.5rem;
+    }
+
+    .notification-dot {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      width: 20px;
+      height: 20px;
+      background: #ff3b30;
+      border-radius: 50%;
+      animation: bounce 2s infinite;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-10px);
+      }
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+
+    /* Water Flowing Animation */
+    .water-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100px;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .water-wave {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent 30%, rgba(0,191,174,0.3) 50%, transparent 70%);
+      animation: waterFlow 3s ease-in-out infinite;
+    }
+
+    .water-wave:nth-child(2) {
+      animation-delay: -1.5s;
+      opacity: 0.7;
+    }
+
+    .water-wave:nth-child(3) {
+      animation-delay: -3s;
+      opacity: 0.5;
+    }
+
+    @keyframes waterFlow {
+      0% {
+        transform: translateX(-50%) translateY(0);
+      }
+      50% {
+        transform: translateX(0%) translateY(-10px);
+      }
+      100% {
+        transform: translateX(50%) translateY(0);
+      }
+    }
+
+    .water-bubbles {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      height: 60px;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: 0;
+      width: 8px;
+      height: 8px;
+      background: rgba(0,191,174,0.6);
+      border-radius: 50%;
+      animation: bubbleRise 4s ease-in-out infinite;
+    }
+
+    .bubble:nth-child(1) { left: 10%; animation-delay: 0s; }
+    .bubble:nth-child(2) { left: 20%; animation-delay: 0.5s; }
+    .bubble:nth-child(3) { left: 30%; animation-delay: 1s; }
+    .bubble:nth-child(4) { left: 40%; animation-delay: 1.5s; }
+    .bubble:nth-child(5) { left: 50%; animation-delay: 2s; }
+    .bubble:nth-child(6) { left: 60%; animation-delay: 2.5s; }
+    .bubble:nth-child(7) { left: 70%; animation-delay: 3s; }
+    .bubble:nth-child(8) { left: 80%; animation-delay: 3.5s; }
+    .bubble:nth-child(9) { left: 90%; animation-delay: 4s; }
+
+    @keyframes bubbleRise {
+      0% {
+        transform: translateY(0) scale(0);
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-60px) scale(1);
+        opacity: 0;
+      }
+    }
+
+    .ai-chat-modal {
+      position: fixed;
+      bottom: 100px;
+      right: 20px;
+      width: 350px;
+      height: 500px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      display: none;
+      flex-direction: column;
+      z-index: 1001;
+    }
+
+    .ai-chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--gradient);
+      color: white;
+      border-radius: 15px 15px 0 0;
+    }
+
+    .ai-chat-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .ai-close-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .ai-chat-messages {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .ai-message {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+
+    .ai-avatar {
+      width: 30px;
+      height: 30px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+
+    .ai-text {
+      background: var(--bg);
+      padding: 0.8rem;
+      border-radius: 10px;
+      max-width: 80%;
+      font-size: 0.9rem;
+    }
+
+    .user-message {
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-start;
+      justify-content: flex-end;
+    }
+
+    .user-text {
+      background: var(--accent);
+      color: white;
+      padding: 0.8rem;
+      border-radius: 10px;
+      max-width: 80%;
+      font-size: 0.9rem;
+    }
+
+    .ai-chat-input {
+      display: flex;
+      padding: 1rem;
+      gap: 0.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .ai-chat-input input {
+      flex: 1;
+      padding: 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .ai-chat-input button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.8rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    /* PWA Install Prompt */
+    .install-prompt {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      z-index: 10000;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    body.light-mode .install-prompt {
+      background: var(--bg-card-light);
+      border-color: var(--border-light);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .install-content {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .install-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+
+    .install-text {
+      flex: 1;
+    }
+
+    .install-text h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    body.light-mode .install-text h3 {
+      color: var(--text-light);
+    }
+
+    .install-text p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    body.light-mode .install-text p {
+      color: var(--text-muted-light);
+    }
+
+    .install-buttons {
+      display: flex;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .install-btn {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .dismiss-btn {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    body.light-mode .dismiss-btn {
+      background: var(--bg-light);
+      color: var(--text-light);
+      border-color: var(--border-light);
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .install-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .install-buttons {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+
+
+    /* Notification Modal */
+    .notification-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .notification-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      width: 90%;
+      max-width: 400px;
+      max-height: 80vh;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    body.light-mode .notification-content {
+      background: var(--bg-card-light);
+      border-color: var(--border-light);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .notification-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--gradient);
+      color: white;
+    }
+
+    .notification-header h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background 0.3s ease;
+    }
+
+    .close-btn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .notification-list {
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 0;
+    }
+
+    .notification-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s ease;
+      cursor: pointer;
+    }
+
+    body.light-mode .notification-item {
+      border-bottom-color: var(--border-light);
+    }
+
+    .notification-item:hover {
+      background: var(--bg-card-hover);
+    }
+
+    body.light-mode .notification-item:hover {
+      background: var(--bg-card-hover-light);
+    }
+
+    .notification-item.unread {
+      background: rgba(0,191,174,0.1);
+    }
+
+    .notification-item.read {
+      opacity: 0.7;
+    }
+
+    .notification-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .notification-icon.success {
+      background: rgba(0,191,174,0.2);
+    }
+
+    .notification-icon.error {
+      background: rgba(255,59,48,0.2);
+    }
+
+    .notification-icon.warning {
+      background: rgba(255,193,7,0.2);
+    }
+
+    .notification-icon.info {
+      background: rgba(0,123,255,0.2);
+    }
+
+    .notification-details {
+      flex: 1;
+    }
+
+    .notification-message {
+      margin: 0 0 0.5rem 0;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .notification-time {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    body.light-mode .notification-time {
+      color: var(--text-muted-light);
+    }
+
+    .no-notifications {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    body.light-mode .no-notifications {
+      color: var(--text-muted-light);
+    }
+
+    .notification-actions {
+      display: flex;
+      gap: 0.5rem;
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    body.light-mode .notification-actions {
+      border-top-color: var(--border-light);
+    }
+
+    .mark-read-btn, .clear-all-btn {
+      flex: 1;
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .mark-read-btn {
+      background: var(--accent);
+      color: white;
+    }
+
+    .mark-read-btn:hover {
+      background: #00a89e;
+    }
+
+    .clear-all-btn {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    body.light-mode .clear-all-btn {
+      background: var(--bg-light);
+      color: var(--text-light);
+      border-color: var(--border-light);
+    }
+
+    .clear-all-btn:hover {
+      background: #ff3b30;
+      color: white;
+      border-color: #ff3b30;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .notification-content {
+        width: 95%;
+        max-height: 90vh;
+      }
+      
+      .notification-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+    <svg id="theme-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+    </svg>
+  </button>
+
+  <!-- AI Chat Widget -->
+  <div id="ai-chat-widget" class="ai-chat-widget" onclick="toggleAIChat()">
+    <i class="fas fa-robot"></i>
+    <div class="notification-dot" onclick="showNotifications(event)">0</div>
+  </div>
+
+  <!-- AI Chat Modal -->
+  <div id="ai-chat-modal" class="ai-chat-modal">
+    <div class="ai-chat-header">
+      <h3>AI Assistant</h3>
+      <button onclick="toggleAIChat()" class="ai-close-btn">×</button>
+    </div>
+    <div class="ai-chat-messages" id="ai-chat-messages">
+      <div class="ai-message">
+        <div class="ai-avatar">🤖</div>
+        <div class="ai-text">Hello! I'm your Skyline Realty AI assistant. How can I help you today?</div>
+      </div>
+    </div>
+    <div class="ai-chat-input">
+      <input type="text" id="ai-input" placeholder="Ask me anything about properties..." onkeypress="handleAIInput(event)">
+      <button onclick="sendAIMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    // Global state
+    let currentUser = null;
+    let isDarkMode = true;
+    let currentAuthTab = 'login';
+    let currentSearchTab = 'buy';
+    let cart = JSON.parse(localStorage.getItem('skylineCart')) || [];
+    let notifications = JSON.parse(localStorage.getItem('skylineNotifications')) || [];
+
+    // Theme management
+    function toggleTheme() {
+      isDarkMode = !isDarkMode;
+      document.body.classList.toggle('light-mode', !isDarkMode);
+      localStorage.setItem('skylineTheme', isDarkMode ? 'dark' : 'light');
+      
+      const icon = document.getElementById('theme-icon');
+      if (isDarkMode) {
+        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>';
+      } else {
+        icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>';
+      }
+    }
+
+    // Initialize theme
+    function initTheme() {
+      const savedTheme = localStorage.getItem('skylineTheme');
+      if (savedTheme === 'light') {
+        isDarkMode = false;
+        document.body.classList.add('light-mode');
+        toggleTheme(); // This will set the correct icon
+      }
+    }
+
+    // Cart functions
+    function addToCart(propertyId) {
+      const property = properties.find(p => p.id === propertyId);
+      if (property) {
+        const existingItem = cart.find(item => item.id === propertyId);
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({
+            ...property,
+            quantity: 1
+          });
+        }
+        localStorage.setItem('skylineCart', JSON.stringify(cart));
+        updateCartCount();
+        addNotification(`${property.title} added to cart!`, 'success');
+      }
+    }
+
+    function updateCartCount() {
+      const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+      const cartLink = document.querySelector('.cart-link');
+      if (cartLink) {
+        const countBadge = cartLink.querySelector('.cart-count');
+        if (countBadge) {
+          countBadge.textContent = cartCount;
+          countBadge.style.display = cartCount > 0 ? 'block' : 'none';
+        }
+      }
+    }
+
+    function goToCart() {
+      window.location.href = 'pages/cart.html';
+    }
+
+    // Notification functions
+    function addNotification(message, type = 'info') {
+      const notification = {
+        id: Date.now(),
+        message: message,
+        type: type,
+        timestamp: new Date().toISOString(),
+        read: false
+      };
+      
+      notifications.unshift(notification);
+      localStorage.setItem('skylineNotifications', JSON.stringify(notifications));
+      updateNotificationCount();
+    }
+
+    function updateNotificationCount() {
+      const unreadCount = notifications.filter(n => !n.read).length;
+      const notificationDot = document.querySelector('.notification-dot');
+      
+      if (notificationDot) {
+        if (unreadCount > 0) {
+          notificationDot.textContent = unreadCount > 99 ? '99+' : unreadCount;
+          notificationDot.style.display = 'flex';
+        } else {
+          notificationDot.style.display = 'none';
+        }
+      }
+    }
+
+    function markNotificationsAsRead() {
+      notifications.forEach(n => n.read = true);
+      localStorage.setItem('skylineNotifications', JSON.stringify(notifications));
+      updateNotificationCount();
+    }
+
+    function showNotifications(event) {
+      if (event) {
+        event.stopPropagation();
+      }
+      
+      const notificationModal = document.createElement('div');
+      notificationModal.className = 'notification-modal';
+      notificationModal.innerHTML = `
+        <div class="notification-content">
+          <div class="notification-header">
+            <h3>Notifications</h3>
+            <button onclick="closeNotifications()" class="close-btn">×</button>
+          </div>
+          <div class="notification-list">
+            ${notifications.length === 0 ? 
+              '<p class="no-notifications">No notifications yet</p>' :
+              notifications.map(notification => `
+                <div class="notification-item ${notification.read ? 'read' : 'unread'}">
+                  <div class="notification-icon ${notification.type}">
+                    ${getNotificationIcon(notification.type)}
+                  </div>
+                  <div class="notification-details">
+                    <p class="notification-message">${notification.message}</p>
+                    <span class="notification-time">${formatTime(notification.timestamp)}</span>
+                  </div>
+                </div>
+              `).join('')
+            }
+          </div>
+          ${notifications.length > 0 ? `
+            <div class="notification-actions">
+              <button onclick="markNotificationsAsRead()" class="mark-read-btn">Mark All as Read</button>
+              <button onclick="clearAllNotifications()" class="clear-all-btn">Clear All</button>
+            </div>
+          ` : ''}
+        </div>
+      `;
+      
+      document.body.appendChild(notificationModal);
+      markNotificationsAsRead();
+    }
+
+    function closeNotifications() {
+      const modal = document.querySelector('.notification-modal');
+      if (modal) {
+        modal.remove();
+      }
+    }
+
+    function clearAllNotifications() {
+      notifications = [];
+      localStorage.setItem('skylineNotifications', JSON.stringify(notifications));
+      updateNotificationCount();
+      closeNotifications();
+    }
+
+    function getNotificationIcon(type) {
+      switch(type) {
+        case 'success': return '✅';
+        case 'error': return '❌';
+        case 'warning': return '⚠️';
+        case 'info': return 'ℹ️';
+        default: return '📢';
+      }
+    }
+
+    function formatTime(timestamp) {
+      const now = new Date();
+      const time = new Date(timestamp);
+      const diff = now - time;
+      
+      const minutes = Math.floor(diff / 60000);
+      const hours = Math.floor(diff / 3600000);
+      const days = Math.floor(diff / 86400000);
+      
+      if (minutes < 1) return 'Just now';
+      if (minutes < 60) return `${minutes}m ago`;
+      if (hours < 24) return `${hours}h ago`;
+      return `${days}d ago`;
+    }
+
+    // Enhanced property data with realistic US market properties
+    const properties = [
+      {
+        id: 1,
+        title: "Modern Family Home",
+        location: "Austin, TX",
+        price: "$485,000",
+        image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: "2,800",
+        type: "House"
+      },
+      {
+        id: 2,
+        title: "Downtown Condo",
+        location: "Miami, FL",
+        price: "$320,000",
+        image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+        beds: 2,
+        baths: 2,
+        sqft: "1,200",
+        type: "Condo"
+      },
+      {
+        id: 3,
+        title: "Suburban Ranch",
+        location: "Phoenix, AZ",
+        price: "$395,000",
+        image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 2,
+        sqft: "2,100",
+        type: "House"
+      },
+      {
+        id: 4,
+        title: "Waterfront Townhouse",
+        location: "Seattle, WA",
+        price: "$675,000",
+        image: "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 2.5,
+        sqft: "1,800",
+        type: "Townhouse"
+      },
+      {
+        id: 5,
+        title: "Luxury Penthouse",
+        location: "New York, NY",
+        price: "$1,250,000",
+        image: "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 3,
+        sqft: "2,200",
+        type: "Penthouse"
+      },
+      {
+        id: 6,
+        title: "Family Estate",
+        location: "Dallas, TX",
+        price: "$890,000",
+        image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=80",
+        beds: 5,
+        baths: 4,
+        sqft: "4,200",
+        type: "Estate"
+      },
+      {
+        id: 7,
+        title: "Urban Loft",
+        location: "Chicago, IL",
+        price: "$445,000",
+        image: "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=600&q=80",
+        beds: 2,
+        baths: 2,
+        sqft: "1,600",
+        type: "Loft"
+      },
+      {
+        id: 8,
+        title: "Beach House",
+        location: "San Diego, CA",
+        price: "$1,250,000",
+        image: "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: "2,800",
+        type: "House"
+      },
+      {
+        id: 9,
+        title: "Mountain Cabin",
+        location: "Denver, CO",
+        price: "$525,000",
+        image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 2,
+        sqft: "1,900",
+        type: "Cabin"
+      },
+      {
+        id: 10,
+        title: "Historic Brownstone",
+        location: "Boston, MA",
+        price: "$875,000",
+        image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3.5,
+        sqft: "3,200",
+        type: "Brownstone"
+      },
+      {
+        id: 11,
+        title: "Modern Villa",
+        location: "Los Angeles, CA",
+        price: "$1,850,000",
+        image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
+        beds: 5,
+        baths: 4,
+        sqft: "4,500",
+        type: "Villa"
+      },
+      {
+        id: 12,
+        title: "Downtown Apartment",
+        location: "Portland, OR",
+        price: "$285,000",
+        image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+        beds: 1,
+        baths: 1,
+        sqft: "850",
+        type: "Apartment"
+      },
+      {
+        id: 13,
+        title: "Golf Course Home",
+        location: "Scottsdale, AZ",
+        price: "$750,000",
+        image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: "3,100",
+        type: "House"
+      },
+      {
+        id: 14,
+        title: "Tech Hub Condo",
+        location: "San Francisco, CA",
+        price: "$1,450,000",
+        image: "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=600&q=80",
+        beds: 2,
+        baths: 2,
+        sqft: "1,400",
+        type: "Condo"
+      },
+      {
+        id: 15,
+        title: "Suburban Family Home",
+        location: "Atlanta, GA",
+        price: "$425,000",
+        image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: "2,600",
+        type: "House"
+      },
+      {
+        id: 16,
+        title: "Luxury Estate",
+        location: "Greenwich, CT",
+        price: "$3,450,000",
+        image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 4,
+        sqft: "3,187",
+        type: "Estate"
+      },
+      {
+        id: 17,
+        title: "Coastal Mansion",
+        location: "Miami Beach, FL",
+        price: "$3,999,000",
+        image: "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=600&q=80",
+        beds: 5,
+        baths: 5,
+        sqft: "3,993",
+        type: "Mansion"
+      },
+      {
+        id: 18,
+        title: "Riverside Property",
+        location: "Brooktondale, NY",
+        price: "$799,000",
+        image: "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 3,
+        sqft: "3,118",
+        type: "House"
+      },
+      {
+        id: 19,
+        title: "Oceanfront Villa",
+        location: "Brick, NJ",
+        price: "$1,200,000",
+        image: "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: "2,800",
+        type: "Villa"
+      },
+      {
+        id: 20,
+        title: "University Town Home",
+        location: "Chapel Hill, NC",
+        price: "$650,000",
+        image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: "2,688",
+        type: "House"
+      },
+      {
+        id: 21,
+        title: "Plantation Style Home",
+        location: "Plant City, FL",
+        price: "$1,450,000",
+        image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 4,
+        sqft: "4,280",
+        type: "House"
+      },
+      {
+        id: 22,
+        title: "Ridge Estate",
+        location: "Freehold, NJ",
+        price: "$875,000",
+        image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: "2,306",
+        type: "Estate"
+      },
+      {
+        id: 23,
+        title: "Historic Townhouse",
+        location: "Haddon Township, NJ",
+        price: "$365,000",
+        image: "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=600&q=80",
+        beds: 2,
+        baths: 2,
+        sqft: "1,188",
+        type: "Townhouse"
+      },
+      {
+        id: 24,
+        title: "Cherry Hill Home",
+        location: "Cherry Hill, NJ",
+        price: "$399,999",
+        image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 2,
+        sqft: "1,332",
+        type: "House"
+      },
+      {
+        id: 25,
+        title: "Jones Ferry Estate",
+        location: "Chapel Hill, NC",
+        price: "$650,000",
+        image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: "2,688",
+        type: "Estate"
+      }
+    ];
+
+    // Authentication functions
+    function showMessage(message, type = 'success') {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${type}`;
+      messageDiv.textContent = message;
+      
+      const authCard = document.querySelector('.auth-card');
+      authCard.insertBefore(messageDiv, authCard.firstChild);
+      
+      setTimeout(() => {
+        messageDiv.remove();
+      }, 5000);
+    }
+
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function validatePassword(password) {
+      return password.length >= 6;
+    }
+
+    function showFieldError(input, message) {
+      const formGroup = input.closest('.form-group');
+      formGroup.classList.add('error');
+      input.classList.add('error');
+      
+      // Remove existing error message
+      const existingError = formGroup.querySelector('.error-message');
+      if (existingError) {
+        existingError.remove();
+      }
+      
+      // Add new error message
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.textContent = message;
+      formGroup.appendChild(errorDiv);
+      
+      // Focus on the field
+      input.focus();
+    }
+
+    function clearFormErrors(form) {
+      form.querySelectorAll('.form-group').forEach(group => {
+        group.classList.remove('error');
+        group.querySelectorAll('input').forEach(input => {
+          input.classList.remove('error');
+        });
+        const errorMessage = group.querySelector('.error-message');
+        if (errorMessage) {
+          errorMessage.remove();
+        }
+      });
+    }
+
+    function addInputValidation() {
+      document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('blur', function() {
+          const value = this.value.trim();
+          const formGroup = this.closest('.form-group');
+          
+          if (!value) {
+            showFieldError(this, 'This field is required');
+          } else {
+            formGroup.classList.remove('error');
+            this.classList.remove('error');
+            const errorMessage = formGroup.querySelector('.error-message');
+            if (errorMessage) {
+              errorMessage.remove();
+            }
+          }
+        });
+      });
+    }
+
+    function handleAuth(event) {
+      event.preventDefault();
+      const form = event.target;
+      const emailInput = form.querySelector('input[type="email"]');
+      const passwordInput = form.querySelector('input[type="password"]');
+      const nameInput = form.querySelector('input[name="name"]');
+      
+      const email = emailInput.value;
+      const password = passwordInput.value;
+      const name = nameInput?.value;
+
+      // Clear previous errors
+      clearFormErrors(form);
+
+      let hasErrors = false;
+
+      // Email validation
+      if (!email.trim()) {
+        showFieldError(emailInput, 'Email is required');
+        hasErrors = true;
+      } else if (!validateEmail(email)) {
+        showFieldError(emailInput, 'Please enter a valid email address');
+        hasErrors = true;
+      }
+
+      // Password validation
+      if (!password.trim()) {
+        showFieldError(passwordInput, 'Password is required');
+        hasErrors = true;
+      } else if (!validatePassword(password)) {
+        showFieldError(passwordInput, 'Password must be at least 6 characters');
+        hasErrors = true;
+      }
+
+      // Name validation for signup
+      if (currentAuthTab === 'signup') {
+        if (!name || !name.trim()) {
+          showFieldError(nameInput, 'Full name is required');
+          hasErrors = true;
+        } else if (name.length < 2) {
+          showFieldError(nameInput, 'Name must be at least 2 characters');
+          hasErrors = true;
+        }
+      }
+
+      if (hasErrors) {
+        addNotification('Please fix the errors in the form', 'error');
+        return;
+      }
+
+      // Simulate authentication
+      const btn = form.querySelector('button[type="submit"]');
+      const originalText = btn.textContent;
+      btn.innerHTML = '<span class="loading"></span> Authenticating...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        if (currentAuthTab === 'signup') {
+          // Simulate signup
+          currentUser = {
+            id: Date.now(),
+            name: name,
+            email: email,
+            avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=00bfae&color=fff`
+          };
+          addNotification('Account created successfully! Welcome to Skyline Realty.', 'success');
+        } else {
+          // Simulate login
+          currentUser = {
+            id: 1,
+            name: email.split('@')[0],
+            email: email,
+            avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(email.split('@')[0])}&background=00bfae&color=fff`
+          };
+          addNotification('Welcome back! You have successfully logged in.', 'success');
+        }
+
+        localStorage.setItem('skylineUser', JSON.stringify(currentUser));
+        btn.textContent = originalText;
+        btn.disabled = false;
+        
+        setTimeout(() => {
+          renderHome();
+        }, 1000);
+      }, 2000);
+    }
+
+    function loginWithGoogle() {
+      const btn = document.querySelector('.google-btn');
+      const originalText = btn.textContent;
+      btn.innerHTML = '<span class="loading"></span> Connecting...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        currentUser = {
+          id: Date.now(),
+          name: 'Google User',
+          email: 'user@gmail.com',
+          avatar: 'https://ui-avatars.com/api/?name=Google+User&background=00bfae&color=fff'
+        };
+        localStorage.setItem('skylineUser', JSON.stringify(currentUser));
+        btn.textContent = originalText;
+        btn.disabled = false;
+        addNotification('Successfully signed in with Google!', 'success');
+        
+        setTimeout(() => {
+          renderHome();
+        }, 1000);
+      }, 2000);
+    }
+
+    function logout() {
+      currentUser = null;
+      localStorage.removeItem('skylineUser');
+      renderAuth();
+    }
+
+    // Render functions
+    function renderAuth() {
+      document.getElementById('app').innerHTML = `
+        <div class="auth-container">
+          <div class="water-container">
+            <div class="water-wave"></div>
+            <div class="water-wave"></div>
+            <div class="water-wave"></div>
+            <div class="water-bubbles">
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+              <div class="bubble"></div>
+            </div>
+          </div>
+          <div class="auth-card">
+            <div class="auth-header">
+              <h1>Skyline Realty</h1>
+              <p>Find your perfect home with confidence</p>
+            </div>
+            
+            <div class="auth-tabs">
+              <div class="auth-tab ${currentAuthTab === 'login' ? 'active' : ''}" onclick="switchAuthTab('login')">
+                Sign In
+              </div>
+              <div class="auth-tab ${currentAuthTab === 'signup' ? 'active' : ''}" onclick="switchAuthTab('signup')">
+                Sign Up
+              </div>
+            </div>
+
+            <form onsubmit="handleAuth(event)">
+              ${currentAuthTab === 'signup' ? `
+                <div class="form-group">
+                  <label for="name">Full Name</label>
+                  <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
+              ` : ''}
+              
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+              </div>
+              
+              <button type="submit" class="auth-btn">
+                ${currentAuthTab === 'login' ? 'Sign In' : 'Create Account'}
+              </button>
+            </form>
+
+            <div class="divider">
+              <span>or continue with</span>
+            </div>
+
+            <button class="google-btn" onclick="loginWithGoogle()">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.64 9.20455C17.64 8.56641 17.5827 7.95273 17.4764 7.36364H9V10.845H11.4436C11.24 11.97 10.639 12.923 9.6875 13.5612V15.8195H12.7863C14.625 14.2527 15.2727 11.9455 15.2727 9.20455Z" fill="#4285F3"/>
+                <path d="M9 18.0001C11.43 18.0001 13.4341 17.0727 14.8659 15.8195L11.7863 13.5612C11.0842 14.4545 10.0318 15.0001 9 15.0001Z" fill="#34A853"/>
+                <path d="M3.69318 10.845H3.6939C3.16364 9.96955 2.84318 8.93636 2.84318 7.81818C2.84318 6.7 3.16364 5.67273 3.6939 4.79091V2.57273H1.68C0.648 4.48182 0 6.72727 0 9.18182C0 11.6364 0.648 13.8818 1.68 15.7909L3.69318 10.845Z" fill="#FBBC04"/>
+                <path d="M9 3.57273C10.3218 3.57273 11.5073 4.09545 12.4409 4.92273L9.6875 3.5612C8.639 2.92727 7.39545 2.5 6 2.5C3.65455 2.5 1.67273 4.48182 1.67273 6.93182L3.69318 8.9375C4.16364 8.0625 4.84318 7.40682 5.66955 7.03125L3.69318 10.845C3.25455 9.96364 3 8.92727 3 7.81818C3 6.70909 3.25455 5.67273 3.69318 4.79091V1.57273H3.6939C3.25455 2.45455 3 3.40909 3 4.40909C3 5.40909 3.25455 6.36364 3.6939 7.24545L3.69318 10.845Z" fill="#EA4335"/>
+              </svg>
+              Google
+            </button>
+
+            <div class="auth-footer">
+              ${currentAuthTab === 'login' ? 
+                "Don't have an account? " : 
+                "Already have an account? "
+              }
+              <a href="#" onclick="switchAuthTab('${currentAuthTab === 'login' ? 'signup' : 'login'}')">
+                ${currentAuthTab === 'login' ? 'Sign up' : 'Sign in'}
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function switchAuthTab(tab) {
+      currentAuthTab = tab;
+      renderAuth();
+    }
+
+    function renderHome() {
+      document.getElementById('app').innerHTML = `
+        <div class="navbar">
+          <span class="logo">SKYLINE REALTY</span>
+          <nav>
+            <a href="#" class="active">Home</a>
+            <a href="pages/properties.html">Properties</a>
+            <a href="pages/buy.html">Buy</a>
+            <a href="pages/rent.html">Rent</a>
+            <a href="pages/sell.html">Sell</a>
+            <a href="pages/quick-move-in.html">Quick Move In</a>
+            <a href="pages/verified.html">Verified</a>
+            <a href="pages/about.html">About</a>
+            <a href="pages/contact.html">Contact</a>
+            <a href="pages/payment-demo.html">Payment Demo</a>
+            <a href="pages/cart.html" class="cart-link" onclick="goToCart()">
+              🛒 Cart
+              <span class="cart-count" style="display: none;">0</span>
+            </a>
+            <button class="cta-btn" onclick="scrollToSearch()">Find a Home</button>
+            <button class="cta-btn" style="background:var(--bg-card);color:var(--text);margin-left:0.5rem;" onclick="logout()">
+              Logout
+            </button>
+          </nav>
+        </div>
+
+        <div class="hero">
+          <h1 class="hero-title">Find Your Dream Home</h1>
+          <p class="hero-subtitle">Discover luxury properties with our expert real estate services. Your perfect home is waiting.</p>
+          
+          <div class="search-container">
+            <div class="search-tabs">
+              <div class="search-tab active" onclick="switchSearchTab('buy', this)">Buy</div>
+              <div class="search-tab" onclick="switchSearchTab('rent', this)">Rent</div>
+              <div class="search-tab" onclick="switchSearchTab('sell', this)">Sell</div>
+            </div>
+            
+            <form class="search-form" onsubmit="handleSearch(event)">
+              <input type="text" placeholder="Location, city, or zip code" required>
+              <select>
+                <option>Property Type</option>
+                <option>House</option>
+                <option>Condo</option>
+                <option>Townhouse</option>
+                <option>Land</option>
+              </select>
+              <button type="submit" class="search-btn">Search</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="properties-section">
+          <div class="section-header">
+            <h2>Featured Properties</h2>
+            <p>Explore our handpicked selection of premium properties</p>
+          </div>
+          
+          <div class="properties-grid">
+            ${properties.map(property => `
+              <div class="property-card">
+                <img src="${property.image}" alt="${property.title}" class="property-image" onclick="showPropertyDetails(${property.id})">
+                <div class="property-info">
+                  <div class="property-price">${property.price}</div>
+                  <h3 class="property-title">${property.title}</h3>
+                  <p class="property-location">${property.location}</p>
+                  <div class="property-features">
+                    <span class="feature">🛏️ ${property.beds} beds</span>
+                    <span class="feature">🛁 ${property.baths} baths</span>
+                    <span class="feature">🏠 ${property.sqft} sqft</span>
+                    <span class="feature">📍 ${property.type}</span>
+                  </div>
+                  <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                    <button class="btn-primary" style="flex: 1;" onclick="addToCart(${property.id})">
+                      Add to Cart
+                    </button>
+                    <button class="btn-secondary" style="flex: 1;" onclick="showPropertyDetails(${property.id})">
+                      View Details
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function switchSearchTab(tab, element) {
+      currentSearchTab = tab;
+      
+      // Update active tab
+      document.querySelectorAll('.search-tab').forEach(tab => tab.classList.remove('active'));
+      element.classList.add('active');
+      
+      // Update form based on tab
+      const form = document.querySelector('.search-form');
+      const submitBtn = form.querySelector('.search-btn');
+      
+      if (tab === 'rent') {
+        submitBtn.textContent = 'Search Rentals';
+        addNotification('Switched to rental search. Find your perfect rental property!', 'info');
+      } else if (tab === 'sell') {
+        submitBtn.textContent = 'List Property';
+        addNotification('Switched to selling. Ready to list your property?', 'info');
+      } else {
+        submitBtn.textContent = 'Search';
+        addNotification('Switched to buying. Find your dream home!', 'info');
+      }
+    }
+
+    function handleSearch(event) {
+      event.preventDefault();
+      
+      if (currentSearchTab === 'rent') {
+        addNotification('Redirecting to rental properties...', 'info');
+        window.location.href = 'pages/rent.html';
+      } else if (currentSearchTab === 'sell') {
+        addNotification('Redirecting to sell your property...', 'info');
+        window.location.href = 'pages/sell.html';
+      } else {
+        addNotification('Searching for properties...', 'info');
+        window.location.href = 'pages/properties.html';
+      }
+    }
+
+    function showPropertyDetails(id) {
+      const property = properties.find(p => p.id === id);
+      if (property) {
+        addNotification(`Viewing details for ${property.title}. Property detail pages coming soon!`, 'info');
+      }
+    }
+
+    function showProperties() {
+      showMessage('Properties page coming soon! This would show all available listings with filters.');
+    }
+
+    function showAbout() {
+      showMessage('About page coming soon! This would show company information and team details.');
+    }
+
+    function showContact() {
+      showMessage('Contact page coming soon! This would include contact forms and office locations.');
+    }
+
+    function scrollToSearch() {
+      const hero = document.querySelector('.hero');
+      if (hero) hero.scrollIntoView({behavior:'smooth'});
+    }
+
+    // Initialize app
+    function init() {
+      initTheme();
+      
+      const savedUser = localStorage.getItem('skylineUser');
+      if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+        renderHome();
+        updateCartCount();
+        updateNotificationCount();
+        
+        // Add welcome notification for returning users
+        if (notifications.length === 0) {
+          addNotification('Welcome back! Check out our latest properties.', 'info');
+        }
+      } else {
+        renderAuth();
+        updateNotificationCount();
+      }
+      
+      // Add input validation after rendering
+      setTimeout(() => {
+        addInputValidation();
+      }, 100);
+
+      // Register service worker for PWA
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('Service Worker registered successfully:', registration);
+          })
+          .catch(error => {
+            console.log('Service Worker registration failed:', error);
+          });
+      }
+
+      // Show install prompt
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        showInstallPrompt();
+      });
+    }
+
+    // PWA Install Prompt
+    function showInstallPrompt() {
+      const installPrompt = document.createElement('div');
+      installPrompt.className = 'install-prompt';
+      installPrompt.innerHTML = `
+        <div class="install-content">
+          <div class="install-icon">📱</div>
+          <div class="install-text">
+            <h3>Install Skyline Realty</h3>
+            <p>Add to home screen for quick access</p>
+          </div>
+          <div class="install-buttons">
+            <button onclick="installApp()" class="install-btn">Install</button>
+            <button onclick="dismissInstall()" class="dismiss-btn">Not Now</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(installPrompt);
+    }
+
+    function installApp() {
+      if (window.deferredPrompt) {
+        window.deferredPrompt.prompt();
+        window.deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the install prompt');
+          }
+          window.deferredPrompt = null;
+        });
+      }
+      dismissInstall();
+    }
+
+    function dismissInstall() {
+      const prompt = document.querySelector('.install-prompt');
+      if (prompt) {
+        prompt.remove();
+      }
+    }
+
+    function toggleAIChat() {
+      const modal = document.getElementById('ai-chat-modal');
+      const widget = document.getElementById('ai-chat-widget');
+      
+      if (modal.style.display === 'flex') {
+        modal.style.display = 'none';
+        widget.style.transform = 'scale(1)';
+      } else {
+        modal.style.display = 'flex';
+        widget.style.transform = 'scale(1.1)';
+        document.getElementById('ai-input').focus();
+      }
+    }
+
+    function handleAIInput(event) {
+      if (event.key === 'Enter') {
+        sendAIMessage();
+      }
+    }
+
+    function sendAIMessage() {
+      const input = document.getElementById('ai-input');
+      const message = input.value.trim();
+      
+      if (!message) return;
+      
+      // Add user message
+      addMessage(message, 'user');
+      input.value = '';
+      
+      // Add notification for new AI response
+      setTimeout(() => {
+        const response = generateAIResponse(message);
+        addMessage(response, 'ai');
+        addNotification('New message from AI Assistant', 'info');
+      }, 1000);
+    }
+
+    function addMessage(text, sender) {
+      const messages = document.getElementById('ai-chat-messages');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = sender === 'user' ? 'user-message' : 'ai-message';
+      
+      if (sender === 'user') {
+        messageDiv.innerHTML = `
+          <div class="user-text">${text}</div>
+        `;
+      } else {
+        messageDiv.innerHTML = `
+          <div class="ai-avatar">🤖</div>
+          <div class="ai-text">${text}</div>
+        `;
+      }
+      
+      messages.appendChild(messageDiv);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function generateAIResponse(message) {
+      const lowerMessage = message.toLowerCase();
+      
+      if (lowerMessage.includes('property') || lowerMessage.includes('house') || lowerMessage.includes('home')) {
+        return "I can help you find properties! We have listings across the US. Would you like to browse our properties or tell me more about what you're looking for?";
+      } else if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
+        return "Our properties range from $285,000 to $1,850,000. I can help you filter by price range. What's your budget?";
+      } else if (lowerMessage.includes('location') || lowerMessage.includes('area')) {
+        return "We have properties in major cities including New York, Los Angeles, Miami, Austin, Seattle, and more. Which area interests you?";
+      } else if (lowerMessage.includes('rent') || lowerMessage.includes('rental')) {
+        return "We have rental properties available! You can check our rental listings or I can help you find something specific. What are you looking for?";
+      } else if (lowerMessage.includes('sell') || lowerMessage.includes('listing')) {
+        return "Interested in selling? Our team can help you list your property and get the best value. Would you like to learn more about our selling process?";
+      } else if (lowerMessage.includes('agent') || lowerMessage.includes('contact')) {
+        return "Our team of expert agents is here to help! You can contact us at info@skyline.com or call +1 (555) 123-4567. Would you like me to connect you?";
+      } else {
+        return "I'm here to help with all your real estate needs! You can ask me about properties, pricing, locations, or how to buy/sell/rent. What would you like to know?";
+      }
+    }
+
+    // Initialize the application when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      init();
+    });
+  </script>
+</body>
+</html>

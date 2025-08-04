@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rent Properties - Skyline Realty</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --accent: #00bfae;
+      --accent2: #1de9b6;
+      --bg: #0a0a0a;
+      --bg-card: #1a1a1a;
+      --text: #ffffff;
+      --text-muted: #a0a0a0;
+      --border: #333333;
+      --gradient: linear-gradient(135deg, #00bfae 0%, #1de9b6 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3vw;
+      background: rgba(26,26,26,0.95);
+      backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .navbar nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .navbar nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .navbar nav a:hover {
+      color: var(--accent);
+    }
+
+    .navbar nav a.active {
+      color: var(--accent);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.6) 100%);
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .search-container {
+      background: var(--bg-card);
+      padding: 2rem;
+      border-radius: 15px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .search-form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .search-form input,
+    .search-form select {
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .search-form input:focus,
+    .search-form select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .search-btn {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .search-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,191,174,0.3);
+    }
+
+    .features {
+      padding: 4rem 3vw;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-card i {
+      font-size: 3rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card p {
+      color: var(--text-muted);
+    }
+
+    .properties-section {
+      padding: 4rem 3vw;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .properties-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .property-card {
+      background: var(--bg-card);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .property-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .property-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .property-info {
+      padding: 1.5rem;
+    }
+
+    .property-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .property-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .property-location {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .property-features {
+      display: flex;
+      gap: 1rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .rent-now-btn {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 1rem;
+      width: 100%;
+    }
+
+    .rent-now-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,191,174,0.3);
+    }
+
+    .availability-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--accent);
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .search-form {
+        grid-template-columns: 1fr;
+      }
+      
+      .properties-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <span class="logo">SKYLINE REALTY</span>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="properties.html">Properties</a>
+      <a href="buy.html">Buy</a>
+      <a href="rent.html" class="active">Rent</a>
+      <a href="sell.html">Sell</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+
+  <div class="hero">
+    <h1>Find Your Perfect Rental</h1>
+    <p>Discover amazing rental properties that fit your lifestyle and budget</p>
+    
+    <div class="search-container">
+      <form class="search-form" onsubmit="handleSearch(event)">
+        <input type="text" placeholder="Location, city, or ZIP" required>
+        <select required>
+          <option value="">Property Type</option>
+          <option value="apartment">Apartment</option>
+          <option value="house">House</option>
+          <option value="condo">Condo</option>
+          <option value="townhouse">Townhouse</option>
+        </select>
+        <select required>
+          <option value="">Rent Range</option>
+          <option value="0-1000">Under $1,000</option>
+          <option value="1000-2000">$1,000 - $2,000</option>
+          <option value="2000-3000">$2,000 - $3,000</option>
+          <option value="3000-5000">$3,000 - $5,000</option>
+          <option value="5000+">$5,000+</option>
+        </select>
+        <button type="submit" class="search-btn">Search Rentals</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="features">
+    <div class="feature-card">
+      <i class="fas fa-key"></i>
+      <h3>Quick Move-in</h3>
+      <p>Many properties are available for immediate move-in with flexible lease terms</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-shield-alt"></i>
+      <h3>Verified Properties</h3>
+      <p>All our rental properties are verified and inspected for your safety</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-tools"></i>
+      <h3>Maintenance Support</h3>
+      <p>24/7 maintenance support and property management services included</p>
+    </div>
+  </div>
+
+  <div class="properties-section">
+    <div class="section-header">
+      <h2>Available Rentals</h2>
+      <p>Quality rental properties in prime locations</p>
+    </div>
+    
+    <div class="properties-grid" id="propertiesGrid">
+      <!-- Properties will be loaded here -->
+    </div>
+  </div>
+
+  <script>
+    // Rental properties data
+    const rentalProperties = [
+      {
+        id: 1,
+        title: "Modern Downtown Apartment",
+        location: "Austin, TX",
+        price: 1800,
+        image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+        beds: 2,
+        baths: 2,
+        sqft: 1200,
+        type: "apartment",
+        available: true
+      },
+      {
+        id: 2,
+        title: "Luxury Condo Rental",
+        location: "Miami, FL",
+        price: 3200,
+        image: "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=600&q=80",
+        beds: 2,
+        baths: 2,
+        sqft: 1400,
+        type: "condo",
+        available: true
+      },
+      {
+        id: 3,
+        title: "Family House Rental",
+        location: "Phoenix, AZ",
+        price: 2200,
+        image: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 2,
+        sqft: 1800,
+        type: "house",
+        available: true
+      },
+      {
+        id: 4,
+        title: "Waterfront Townhouse",
+        location: "Seattle, WA",
+        price: 3800,
+        image: "https://images.unsplash.com/photo-1513584684374-8bab748fbf90?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 2.5,
+        sqft: 2000,
+        type: "townhouse",
+        available: true
+      },
+      {
+        id: 5,
+        title: "Studio Apartment",
+        location: "New York, NY",
+        price: 2800,
+        image: "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=600&q=80",
+        beds: 1,
+        baths: 1,
+        sqft: 600,
+        type: "apartment",
+        available: true
+      },
+      {
+        id: 6,
+        title: "Suburban Family Home",
+        location: "Dallas, TX",
+        price: 2400,
+        image: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=80",
+        beds: 4,
+        baths: 3,
+        sqft: 2200,
+        type: "house",
+        available: true
+      },
+      {
+        id: 7,
+        title: "Penthouse Rental",
+        location: "Los Angeles, CA",
+        price: 8500,
+        image: "https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=600&q=80",
+        beds: 3,
+        baths: 3,
+        sqft: 2800,
+        type: "condo",
+        available: true
+      },
+      {
+        id: 8,
+        title: "Garden Apartment",
+        location: "Portland, OR",
+        price: 1600,
+        image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+        beds: 2,
+        baths: 1,
+        sqft: 1000,
+        type: "apartment",
+        available: true
+      }
+    ];
+
+    function formatPrice(price) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(price) + '/month';
+    }
+
+    function renderProperties() {
+      const grid = document.getElementById('propertiesGrid');
+      grid.innerHTML = rentalProperties.map(property => `
+        <div class="property-card" onclick="showPropertyDetails(${property.id})">
+          <div style="position: relative;">
+            <img src="${property.image}" alt="${property.title}" class="property-image">
+            ${property.available ? '<div class="availability-badge">Available</div>' : ''}
+          </div>
+          <div class="property-info">
+            <div class="property-price">${formatPrice(property.price)}</div>
+            <h3 class="property-title">${property.title}</h3>
+            <p class="property-location">${property.location}</p>
+            <div class="property-features">
+              <span class="feature">🛏️ ${property.beds} beds</span>
+              <span class="feature">🛁 ${property.baths} baths</span>
+              <span class="feature">🏠 ${property.sqft.toLocaleString()} sqft</span>
+              <span class="feature">📍 ${property.type}</span>
+            </div>
+            <button class="rent-now-btn" onclick="event.stopPropagation(); rentProperty(${property.id})">
+              Schedule Viewing
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function showPropertyDetails(id) {
+      const property = rentalProperties.find(p => p.id === id);
+      if (property) {
+        alert(`Rental Details:\n${property.title}\n${property.location}\n${formatPrice(property.price)}\n${property.beds} beds, ${property.baths} baths\n${property.sqft.toLocaleString()} sqft\n\nAvailable: ${property.available ? 'Yes' : 'No'}`);
+      }
+    }
+
+    function rentProperty(id) {
+      const property = rentalProperties.find(p => p.id === id);
+      if (property) {
+        alert(`Thank you for your interest in ${property.title}!\n\nOur rental agent will contact you within 24 hours to schedule a viewing and discuss lease terms.\n\nProperty: ${property.title}\nRent: ${formatPrice(property.price)}\nLocation: ${property.location}`);
+      }
+    }
+
+    function handleSearch(event) {
+      event.preventDefault();
+      alert('Rental search functionality coming soon! This would show filtered rental results based on your criteria.');
+    }
+
+    // Initial render
+    renderProperties();
+  </script>
+</body>
+</html> 
